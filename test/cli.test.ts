@@ -75,10 +75,8 @@ describe("CLI", () => {
       "--no-cache",
     ]);
     expect(code).toBe(0);
-    expect(error.mock.calls.some((call) => String(call[0]).includes("Browser checks are not available"))).toBe(
-      true,
-    );
-    const invalid = await runCli(["node", "a11ycn", "audit", ".", "--format", "sarif"]);
+    expect(error.mock.calls.some((call) => String(call[0]).includes("Playwright"))).toBe(true);
+    const invalid = await runCli(["node", "a11ycn", "audit", "fixtures/img-alt/good.tsx", "--format", "yaml", "--no-cache"]);
     expect(invalid).toBe(1);
   });
 });

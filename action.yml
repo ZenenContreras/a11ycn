@@ -1,0 +1,37 @@
+name: a11ycn
+description: Run a11ycn WCAG 2.2 checks and publish annotations or a report.
+inputs:
+  path:
+    description: File or directory to scan
+    required: false
+    default: .
+  fail-on:
+    description: Exit with code 2 at this severity or higher
+    required: false
+    default: serious
+  format:
+    description: md, json, sarif, or github
+    required: false
+    default: github
+  lang:
+    description: Report language (en or es)
+    required: false
+    default: en
+runs:
+  using: composite
+  steps:
+    - name: Set up pnpm
+      uses: pnpm/action-setup@v4
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - name: Build a11ycn from this action
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: |
+        pnpm install --frozen-lockfile
+        pnpm build
+    - name: Audit
+      shell: bash
+      run: node "${{ github.action_path }}/packages/cli/dist/index.js" audit "${{ inputs.path }}" --fail-on "${{ inputs.fail-on }}" --format "${{ inputs.format }}" --lang "${{ inputs.lang }}" --no-cache

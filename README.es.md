@@ -3,7 +3,7 @@
 Tu agente de código, ahora auditor de accesibilidad para React, Next.js y shadcn/ui.
 
 [![CI](https://github.com/ZenenContreras/a11ycn/actions/workflows/ci.yml/badge.svg)](https://github.com/ZenenContreras/a11ycn/actions/workflows/ci.yml)
-[![version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/ZenenContreras/a11ycn)
+[![version](https://img.shields.io/badge/version-0.2.0-blue)](https://github.com/ZenenContreras/a11ycn)
 [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 [![a11ycn score](https://img.shields.io/badge/a11ycn_score-100-brightgreen)](./docs/demo/after.md)
 
@@ -74,11 +74,17 @@ pnpm a11ycn audit apps/demo/after --fail-on serious
 
 ```bash
 pnpm a11ycn audit [ruta]                 # .ts, .tsx y .jsx. Por defecto: ./src y ./app
-pnpm a11ycn audit --format md|json
+pnpm a11ycn audit --format md|json|sarif|github
 pnpm a11ycn audit --out .a11ycn/report.json
-pnpm a11ycn audit --fail-on serious      # sale con 2 a partir de esa severidad
-pnpm a11ycn audit --rules icon-button-name,dialog-title
+pnpm a11ycn audit --fail-on serious
+pnpm a11ycn audit --url http://localhost:3000
+pnpm a11ycn audit --lang es
+pnpm a11ycn rules
+pnpm a11ycn badge
+pnpm a11ycn init
 ```
+
+`--lang` acepta `en` o `es`. Si no lo pasas, el orden es `a11ycn.config.json`, `A11YCN_LANG`, `LANG` / `LC_ALL` y al final inglés. `--url` corre axe-core si Playwright está instalado; si no, el CLI explica cómo instalarlo y sigue con el escaneo estático.
 
 Códigos de salida: `0` si nada supera el umbral, `2` si hay hallazgos, `1` si el escaneo no puede correr.
 
@@ -86,7 +92,7 @@ Ignora una línea con `// a11ycn-disable-next-line icon-button-name`. Ignora el 
 
 ## Qué revisa
 
-v0.1.0 ejecuta estas diez reglas. El resto está documentado para el agente en [skills/a11ycn/references/rules.md](skills/a11ycn/references/rules.md) y todavía no se escanea.
+El CLI ejecuta todas las reglas de abajo. El contraste usa la paleta por defecto de Tailwind y las variables de shadcn en `:root` de `globals.css` (`hsl` y `oklch`). Si un color no se puede resolver, el hallazgo queda en `needs_review`.
 
 | Regla | WCAG 2.2 | Nivel | Severidad | En el CLI |
 | --- | --- | --- | --- | --- |
@@ -100,21 +106,21 @@ v0.1.0 ejecuta estas diez reglas. El resto está documentado para el agente en [
 | link-name | 2.4.4 Propósito del enlace | A | serious / moderate | sí |
 | dialog-title | 4.1.2, 1.3.1 | A | serious / moderate | sí |
 | target-size | 2.5.8 Tamaño del objetivo (mínimo) | AA | serious | sí |
-| text-contrast | 1.4.3 Contraste (mínimo) | AA | serious | después |
-| non-text-contrast | 1.4.11 Contraste no textual | AA | serious | después |
-| form-error-association | 3.3.1 Identificación de errores | A | serious | después |
-| input-autocomplete | 1.3.5 Identificar el propósito | AA | serious | después |
-| heading-order | 1.3.1 Información y relaciones | A | moderate | después |
-| landmarks-skip-link | 2.4.1 Evitar bloques | A | serious | después |
-| focus-not-obscured | 2.4.11 Foco no oculto (mínimo) | AA | moderate | después |
-| dragging-alternative | 2.5.7 Movimientos de arrastre | AA | serious | después |
-| no-positive-tabindex | 2.4.3 Orden del foco | A | serious | después |
-| aria-valid | 4.1.2 Nombre, función, valor | A | serious | después |
-| viewport-zoom | 1.4.4 Cambio de tamaño del texto | AA | serious | después |
-| paste-blocked | 3.3.8 Autenticación accesible (mínimo) | AA | serious | después |
-| reduced-motion | 2.3.3, 2.2.2 | AAA / A | minor | después |
-| media-captions | 1.2.2 Subtítulos (pregrabados) | A | minor hasta automatizarla | después |
-| status-messages | 4.1.3 Mensajes de estado | AA | serious | después |
+| text-contrast | 1.4.3 Contraste (mínimo) | AA | serious | sí |
+| non-text-contrast | 1.4.11 Contraste no textual | AA | serious | sí |
+| form-error-association | 3.3.1 Identificación de errores | A | serious | sí |
+| input-autocomplete | 1.3.5 Identificar el propósito | AA | serious | sí |
+| heading-order | 1.3.1 Información y relaciones | A | moderate | sí |
+| landmarks-skip-link | 2.4.1 Evitar bloques | A | serious | sí |
+| focus-not-obscured | 2.4.11 Foco no oculto (mínimo) | AA | moderate | sí |
+| dragging-alternative | 2.5.7 Movimientos de arrastre | AA | serious | sí |
+| no-positive-tabindex | 2.4.3 Orden del foco | A | serious | sí |
+| aria-valid | 4.1.2 Nombre, función, valor | A | serious | sí |
+| viewport-zoom | 1.4.4 Cambio de tamaño del texto | AA | serious | sí |
+| paste-blocked | 3.3.8 Autenticación accesible (mínimo) | AA | serious | sí |
+| reduced-motion | 2.3.3, 2.2.2 | AAA / A | minor | sí |
+| media-captions | 1.2.2 Subtítulos (pregrabados) | A | minor hasta automatizarla | sí |
+| status-messages | 4.1.3 Mensajes de estado | AA | serious | sí |
 
 El criterio 4.1.1 Parsing está obsoleto en WCAG 2.2 y no se usa.
 
@@ -151,7 +157,32 @@ El JSON cumple [skills/a11ycn/assets/report-schema.json](skills/a11ycn/assets/re
 node skills/a11ycn/scripts/validate-report.mjs docs/demo/before.json
 ```
 
-`--format github`, SARIF, `a11ycn rules`, `a11ycn badge`, `a11ycn init` y la GitHub Action compuesta no están en 0.1.0.
+`--format sarif` escribe SARIF 2.1.0. `--format github` escribe anotaciones `::error`, `::warning` y `::notice`.
+
+Otros repos pueden usar la action compuesta `ZenenContreras/a11ycn@v1` con `path`, `fail-on`, `format` y `lang`. La action construye este repo; no descarga un paquete de npm.
+
+El paquete no está publicado. `packages/cli/package.json` ya tiene `bin`, `files` y `publishConfig.provenance`. El workflow `.github/workflows/release.yml` solo corre a mano (`workflow_dispatch`) y necesita el secreto `NPM_TOKEN`.
+
+## Estructura
+
+```text
+action.yml
+i18n/                      inglés y español, y cómo añadir un idioma
+skills/a11ycn/             SKILL.md, referencias, schema y validador
+packages/cli/              paquete npm a11ycn
+packages/eslint-plugin-a11ycn/
+apps/demo/before|after/
+fixtures/
+test/
+docs/demo/
+.github/workflows/
+```
+
+Herramientas compartidas: `eslint.config.js`, `.prettierrc.json`, `tsconfig.base.json`.
+
+## Idiomas
+
+Inglés por defecto. Español cubre el CLI, los encabezados del informe, las revisiones manuales y cada mensaje de hallazgo. Para añadir un idioma, mira [i18n/README.md](i18n/README.md).
 
 ## Qué no hace
 

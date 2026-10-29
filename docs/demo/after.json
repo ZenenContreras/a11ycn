@@ -1,7 +1,7 @@
 {
   "tool": "a11ycn",
-  "version": "0.1.0",
-  "generatedAt": "2026-10-29T01:15:31.482Z",
+  "version": "0.2.0",
+  "generatedAt": "2026-10-29T02:03:11.780Z",
   "target": {
     "path": "apps/demo/after",
     "url": null,

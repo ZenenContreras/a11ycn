@@ -32,6 +32,10 @@ Open a "False positive" issue with the file snippet and the rule id. The ignore 
 
 The block comment disables that rule from that line to the end of the file.
 
+## Translations
+
+Locales live in `i18n/`. English (`en.ts`) is the key list. Spanish (`es.ts`) has to match those keys. See [i18n/README.md](i18n/README.md) for how to add another language.
+
 ## Development
 
 Node.js 20 or newer and pnpm 10.

@@ -21,7 +21,7 @@ describe("SKILL.md frontmatter", () => {
     expect(frontmatter.compatibility.length).toBeGreaterThan(0);
     expect(frontmatter.compatibility.length).toBeLessThanOrEqual(500);
     expect(frontmatter.metadata.author).toBe("zenen");
-    expect(frontmatter.metadata.version).toBe("0.1.0");
+    expect(frontmatter.metadata.version).toBe("0.2.0");
     const body = raw.replace(/^---\n[\s\S]*?\n---\n/, "");
     expect(body.split("\n").length).toBeLessThan(500);
     expect(body.length / 4).toBeLessThan(5000);

@@ -1,0 +1,7 @@
+dist
+coverage
+pnpm-lock.yaml
+docs/demo
+apps/demo
+fixtures
+node_modules

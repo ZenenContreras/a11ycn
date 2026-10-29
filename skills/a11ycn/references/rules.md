@@ -1,6 +1,6 @@
 # Rules
 
-Each rule has an id, a WCAG 2.2 criterion, a severity, and whether v0.1.0 checks it in the CLI. Criterion 4.1.1 Parsing is obsolete in WCAG 2.2 and is not used.
+Each rule has an id, a WCAG 2.2 criterion, a severity, and a static check in the CLI. Criterion 4.1.1 Parsing is obsolete in WCAG 2.2 and is not used.
 
 Severity: critical, serious, moderate, minor. "Heuristic" rules still need a human to confirm edge cases. "Deterministic" rules are decided from source.
 
@@ -37,7 +37,7 @@ Severity: critical, serious, moderate, minor. "Heuristic" rules still need a hum
 
 ## text-contrast
 
-- WCAG 1.4.3 Contrast (Minimum) (AA). Severity: serious. Heuristic. Not automated in v0.1.0.
+- WCAG 1.4.3 Contrast (Minimum) (AA). Severity: serious. Heuristic. Automated.
 - Text should reach 4.5:1, or 3:1 for large text (`text-lg` and bold, or `text-2xl` and up). Resolve Tailwind defaults and shadcn CSS variables. If the color cannot be resolved, mark `needs_review`.
 - Affects people with low vision.
 - Bad: `className="text-gray-400 bg-white"`.
@@ -45,7 +45,7 @@ Severity: critical, serious, moderate, minor. "Heuristic" rules still need a hum
 
 ## non-text-contrast
 
-- WCAG 1.4.11 Non-text Contrast (AA). Severity: serious. Heuristic. Not automated in v0.1.0.
+- WCAG 1.4.11 Non-text Contrast (AA). Severity: serious. Heuristic. Automated.
 - Input borders, informative icons, and focus indicators need 3:1 against the adjacent color.
 - Affects people with low vision.
 
@@ -59,13 +59,13 @@ Severity: critical, serious, moderate, minor. "Heuristic" rules still need a hum
 
 ## form-error-association
 
-- WCAG 3.3.1 Error Identification (A). Severity: serious. Deterministic. Not automated in v0.1.0.
+- WCAG 3.3.1 Error Identification (A). Severity: serious. Deterministic. Automated.
 - A visible error must be tied to the field with `aria-describedby`, and the field needs `aria-invalid`. shadcn `FormMessage` already does this inside `Form`.
 - Affects screen reader users who otherwise do not hear why the field failed.
 
 ## input-autocomplete
 
-- WCAG 1.3.5 Identify Input Purpose (AA). Severity: serious. Deterministic. Not automated in v0.1.0.
+- WCAG 1.3.5 Identify Input Purpose (AA). Severity: serious. Deterministic. Automated.
 - Name, email, phone, address, and card fields need `autoComplete`. Related to `jsx-a11y/autocomplete-valid`.
 - Affects people with cognitive disabilities and anyone using a password manager.
 
@@ -85,7 +85,7 @@ Severity: critical, serious, moderate, minor. "Heuristic" rules still need a hum
 
 ## heading-order
 
-- WCAG 1.3.1 Info and Relationships (A), best practice. Severity: moderate. Deterministic. Not automated in v0.1.0.
+- WCAG 1.3.1 Info and Relationships (A), best practice. Severity: moderate. Deterministic. Automated.
 - One `h1` per page. Do not skip from `h2` to `h4`.
 - Affects screen reader users navigating by heading.
 
@@ -106,7 +106,7 @@ Severity: critical, serious, moderate, minor. "Heuristic" rules still need a hum
 
 ## landmarks-skip-link
 
-- WCAG 2.4.1 Bypass Blocks (A). Severity: serious. Deterministic. Not automated in v0.1.0.
+- WCAG 2.4.1 Bypass Blocks (A). Severity: serious. Deterministic. Automated.
 - The layout needs `<main>`, navigation needs `<nav>`, and the site needs a "Skip to content" link.
 - Affects keyboard users who otherwise tab through the header on every page.
 
@@ -120,54 +120,54 @@ Severity: critical, serious, moderate, minor. "Heuristic" rules still need a hum
 
 ## focus-not-obscured
 
-- WCAG 2.4.11 Focus Not Obscured (Minimum) (AA). Severity: moderate. Heuristic. Not automated in v0.1.0. Status should be `needs_review`.
+- WCAG 2.4.11 Focus Not Obscured (Minimum) (AA). Severity: moderate. Heuristic. Automated. Status should be `needs_review`.
 - A sticky or fixed header or footer can cover the focused element when the page does not set `scroll-padding-top` or `scroll-mt`.
 - Affects keyboard users.
 
 ## dragging-alternative
 
-- WCAG 2.5.7 Dragging Movements (AA). Severity: serious. Heuristic. Not automated in v0.1.0.
+- WCAG 2.5.7 Dragging Movements (AA). Severity: serious. Heuristic. Automated.
 - `dnd-kit`, `react-beautiful-dnd`, and similar lists need a button to move an item up and down.
 - Affects people who cannot drag.
 
 ## no-positive-tabindex
 
-- WCAG 2.4.3 Focus Order (A). Severity: serious. Deterministic. Not automated in v0.1.0.
+- WCAG 2.4.3 Focus Order (A). Severity: serious. Deterministic. Automated.
 - Same idea as `jsx-a11y/tabindex-no-positive`. `tabIndex` greater than 0 fights the natural order.
 - Affects keyboard users.
 
 ## aria-valid
 
-- WCAG 4.1.2 Name, Role, Value (A). Severity: serious. Deterministic. Not automated in v0.1.0.
+- WCAG 4.1.2 Name, Role, Value (A). Severity: serious. Deterministic. Automated.
 - Same idea as `jsx-a11y/aria-role`, `jsx-a11y/aria-props`, and `jsx-a11y/role-supports-aria-props`, plus `aria-hidden="true"` on a focusable element.
 - Affects screen reader users when the accessibility tree lies.
 
 ## viewport-zoom
 
-- WCAG 1.4.4 Resize Text (AA). Severity: serious. Deterministic. Not automated in v0.1.0.
+- WCAG 1.4.4 Resize Text (AA). Severity: serious. Deterministic. Automated.
 - Do not set `user-scalable=no` or `maximum-scale=1` in the Next viewport metadata or a meta tag.
 - Affects people who need to zoom.
 
 ## paste-blocked
 
-- WCAG 3.3.8 Accessible Authentication (Minimum) (AA). Severity: serious. Deterministic. Not automated in v0.1.0.
+- WCAG 3.3.8 Accessible Authentication (Minimum) (AA). Severity: serious. Deterministic. Automated.
 - Do not call `preventDefault` on `onPaste` for passwords or one-time codes.
 - Affects people using a password manager.
 
 ## reduced-motion
 
-- WCAG 2.3.3 Animation from Interactions (AAA) and 2.2.2 Pause, Stop, Hide (A) when motion lasts more than five seconds. Severity: minor. Heuristic. Not automated in v0.1.0.
+- WCAG 2.3.3 Animation from Interactions (AAA) and 2.2.2 Pause, Stop, Hide (A) when motion lasts more than five seconds. Severity: minor. Heuristic. Automated.
 - `animate-*`, transitions, and Framer Motion need `motion-reduce:` or `useReducedMotion`.
 - Affects people with vestibular disorders.
 
 ## media-captions
 
-- WCAG 1.2.2 Captions (Prerecorded) (A). Severity: serious, reported as minor until the check exists so it does not fail CI by surprise. Not automated in v0.1.0.
+- WCAG 1.2.2 Captions (Prerecorded) (A). Severity: serious, reported as minor until the check exists so it does not fail CI by surprise. Automated.
 - `<video>` needs `<track kind="captions">`.
 - Affects people who are deaf or hard of hearing.
 
 ## status-messages
 
-- WCAG 4.1.3 Status Messages (AA). Severity: serious. Deterministic. Not automated in v0.1.0.
+- WCAG 4.1.3 Status Messages (AA). Severity: serious. Deterministic. Automated.
 - Toasts and banners need `aria-live` or `role="status"`. Sonner and the shadcn Toaster already do this.
 - Affects screen reader users.

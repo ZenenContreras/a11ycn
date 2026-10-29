@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-a11ycn",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "ESLint rules for WCAG 2.2 issues in React, Next.js, Tailwind, and shadcn/ui.",
   "type": "module",
@@ -19,7 +19,9 @@
     "build": "tsup",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "culori": "^4.0.2"
+  },
   "peerDependencies": {
     "eslint": ">=9"
   },

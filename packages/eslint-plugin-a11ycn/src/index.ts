@@ -1,5 +1,21 @@
 import type { ESLint, Rule } from "eslint";
+import {
+  ariaValidRule,
+  draggingAlternativeRule,
+  focusNotObscuredRule,
+  formErrorAssociationRule,
+  headingOrderRule,
+  inputAutocompleteRule,
+  landmarksSkipLinkRule,
+  mediaCaptionsRule,
+  noPositiveTabindexRule,
+  pasteBlockedRule,
+  reducedMotionRule,
+  statusMessagesRule,
+  viewportZoomRule,
+} from "./rules/additional.js";
 import { clickableNonInteractiveRule } from "./rules/clickable-non-interactive.js";
+import { nonTextContrastRule, textContrastRule } from "./rules/contrast-rules.js";
 import { dialogTitleRule } from "./rules/dialog-title.js";
 import { focusVisibleRemovedRule } from "./rules/focus-visible-removed.js";
 import { formLabelRule } from "./rules/form-label.js";
@@ -39,12 +55,27 @@ const rules: Record<string, Rule.RuleModule> = {
   "link-name": linkNameRule,
   "dialog-title": dialogTitleRule,
   "target-size": targetSizeRule,
+  "text-contrast": textContrastRule,
+  "non-text-contrast": nonTextContrastRule,
+  "form-error-association": formErrorAssociationRule,
+  "input-autocomplete": inputAutocompleteRule,
+  "heading-order": headingOrderRule,
+  "landmarks-skip-link": landmarksSkipLinkRule,
+  "focus-not-obscured": focusNotObscuredRule,
+  "dragging-alternative": draggingAlternativeRule,
+  "no-positive-tabindex": noPositiveTabindexRule,
+  "aria-valid": ariaValidRule,
+  "viewport-zoom": viewportZoomRule,
+  "paste-blocked": pasteBlockedRule,
+  "reduced-motion": reducedMotionRule,
+  "media-captions": mediaCaptionsRule,
+  "status-messages": statusMessagesRule,
 };
 
 const plugin = {
   meta: {
     name: "eslint-plugin-a11ycn",
-    version: "0.1.0",
+    version: "0.2.0",
   },
   rules,
 } satisfies ESLint.Plugin;

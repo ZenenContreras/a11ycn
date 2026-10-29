@@ -1,10 +1,23 @@
 {
   "name": "a11ycn",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.2.0",
   "description": "Deterministic WCAG 2.2 audits for React, Next.js, Tailwind, and shadcn/ui. No API key.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZenenContreras/a11ycn.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/ZenenContreras/a11ycn#readme",
+  "bugs": {
+    "url": "https://github.com/ZenenContreras/a11ycn/issues"
+  },
+  "keywords": ["a11y", "accessibility", "wcag", "react", "nextjs", "tailwind", "shadcn"],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "bin": {
     "a11ycn": "./dist/index.js"
   },
@@ -17,7 +30,7 @@
   },
   "main": "./dist/index.js",
   "types": "./src/index.ts",
-  "files": ["dist"],
+  "files": ["dist", "README.md"],
   "engines": {
     "node": ">=20"
   },
@@ -30,8 +43,18 @@
     "commander": "^12.1.0",
     "diff": "^7.0.0",
     "eslint": "^9.39.1",
+    "axe-core": "^4.10.3",
+    "culori": "^4.0.2",
     "eslint-plugin-a11ycn": "workspace:*",
     "picocolors": "^1.1.1"
+  },
+  "peerDependencies": {
+    "playwright": ">=1.40.0"
+  },
+  "peerDependenciesMeta": {
+    "playwright": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "tsup": "^8.5.0",

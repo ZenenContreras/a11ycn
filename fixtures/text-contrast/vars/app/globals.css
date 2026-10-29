@@ -1,0 +1,5 @@
+:root {
+  --background: 0 0% 100%;
+  --muted-foreground: 0 0% 70%;
+  --foreground: oklch(0.2 0 0);
+}

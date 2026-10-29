@@ -3,7 +3,7 @@
 Your coding agent, now an accessibility auditor for React, Next.js and shadcn/ui.
 
 [![CI](https://github.com/ZenenContreras/a11ycn/actions/workflows/ci.yml/badge.svg)](https://github.com/ZenenContreras/a11ycn/actions/workflows/ci.yml)
-[![version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/ZenenContreras/a11ycn)
+[![version](https://img.shields.io/badge/version-0.2.0-blue)](https://github.com/ZenenContreras/a11ycn)
 [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 [![a11ycn score](https://img.shields.io/badge/a11ycn_score-100-brightgreen)](./docs/demo/after.md)
 
@@ -81,11 +81,20 @@ pnpm a11ycn audit apps/demo/after --fail-on serious
 
 ```bash
 pnpm a11ycn audit [path]                 # .ts, .tsx, and .jsx. Default: ./src and ./app
-pnpm a11ycn audit --format md|json
+pnpm a11ycn audit --format md|json|sarif|github
 pnpm a11ycn audit --out .a11ycn/report.json
 pnpm a11ycn audit --fail-on serious      # exit 2 at this severity or higher
-pnpm a11ycn audit --rules icon-button-name,dialog-title
+pnpm a11ycn audit --rules text-contrast,dialog-title
+pnpm a11ycn audit --url http://localhost:3000
+pnpm a11ycn audit --lang es
+pnpm a11ycn rules
+pnpm a11ycn badge
+pnpm a11ycn init
 ```
+
+`--url` also runs axe-core when Playwright and Chromium are installed. If they are not, the CLI prints the install command and continues with the static scan. Overlapping static and browser hits are not listed twice.
+
+`--lang` accepts `en` or `es`. Without it, a11ycn uses `lang` from `a11ycn.config.json`, then `A11YCN_LANG`, then `LANG` / `LC_ALL`, then English.
 
 Exit codes: `0` when nothing fails the threshold, `2` when a finding does, `1` when the scan cannot run.
 
@@ -93,7 +102,7 @@ Ignore a line with `// a11ycn-disable-next-line icon-button-name`. Ignore the re
 
 ## What it checks
 
-v0.1.0 runs these ten rules. The others are documented for the agent in [skills/a11ycn/references/rules.md](skills/a11ycn/references/rules.md) and are not scanned yet.
+The CLI runs every rule below. Contrast uses Tailwind default colors and shadcn variables from `:root` in `globals.css` (`hsl` channels and `oklch`). Colors that cannot be resolved are `needs_review`. Details are in [skills/a11ycn/references/rules.md](skills/a11ycn/references/rules.md).
 
 | Rule | WCAG 2.2 | Level | Severity | In the CLI |
 | --- | --- | --- | --- | --- |
@@ -107,21 +116,21 @@ v0.1.0 runs these ten rules. The others are documented for the agent in [skills/
 | link-name | 2.4.4 Link Purpose (In Context) | A | serious / moderate | yes |
 | dialog-title | 4.1.2, 1.3.1 | A | serious / moderate | yes |
 | target-size | 2.5.8 Target Size (Minimum) | AA | serious | yes |
-| text-contrast | 1.4.3 Contrast (Minimum) | AA | serious | later |
-| non-text-contrast | 1.4.11 Non-text Contrast | AA | serious | later |
-| form-error-association | 3.3.1 Error Identification | A | serious | later |
-| input-autocomplete | 1.3.5 Identify Input Purpose | AA | serious | later |
-| heading-order | 1.3.1 Info and Relationships | A | moderate | later |
-| landmarks-skip-link | 2.4.1 Bypass Blocks | A | serious | later |
-| focus-not-obscured | 2.4.11 Focus Not Obscured (Minimum) | AA | moderate | later |
-| dragging-alternative | 2.5.7 Dragging Movements | AA | serious | later |
-| no-positive-tabindex | 2.4.3 Focus Order | A | serious | later |
-| aria-valid | 4.1.2 Name, Role, Value | A | serious | later |
-| viewport-zoom | 1.4.4 Resize Text | AA | serious | later |
-| paste-blocked | 3.3.8 Accessible Authentication (Minimum) | AA | serious | later |
-| reduced-motion | 2.3.3, 2.2.2 | AAA / A | minor | later |
-| media-captions | 1.2.2 Captions (Prerecorded) | A | minor until automated | later |
-| status-messages | 4.1.3 Status Messages | AA | serious | later |
+| text-contrast | 1.4.3 Contrast (Minimum) | AA | serious | yes |
+| non-text-contrast | 1.4.11 Non-text Contrast | AA | serious | yes |
+| form-error-association | 3.3.1 Error Identification | A | serious | yes |
+| input-autocomplete | 1.3.5 Identify Input Purpose | AA | serious | yes |
+| heading-order | 1.3.1 Info and Relationships | A | moderate | yes |
+| landmarks-skip-link | 2.4.1 Bypass Blocks | A | serious | yes |
+| focus-not-obscured | 2.4.11 Focus Not Obscured (Minimum) | AA | moderate | yes |
+| dragging-alternative | 2.5.7 Dragging Movements | AA | serious | yes |
+| no-positive-tabindex | 2.4.3 Focus Order | A | serious | yes |
+| aria-valid | 4.1.2 Name, Role, Value | A | serious | yes |
+| viewport-zoom | 1.4.4 Resize Text | AA | serious | yes |
+| paste-blocked | 3.3.8 Accessible Authentication (Minimum) | AA | serious | yes |
+| reduced-motion | 2.3.3, 2.2.2 | AAA / A | minor | yes |
+| media-captions | 1.2.2 Captions (Prerecorded) | A | minor until automated | yes |
+| status-messages | 4.1.3 Status Messages | AA | serious | yes |
 
 Where a jsx-a11y rule already covers the idea, the reference says so. Tailwind, shadcn, and Next checks are our own rules. WCAG 4.1.1 Parsing is obsolete in 2.2 and is not used.
 
@@ -158,7 +167,58 @@ JSON reports match [skills/a11ycn/assets/report-schema.json](skills/a11ycn/asset
 node skills/a11ycn/scripts/validate-report.mjs docs/demo/before.json
 ```
 
-`--format github`, SARIF, `a11ycn rules`, `a11ycn badge`, `a11ycn init`, and the composite GitHub Action are not in 0.1.0.
+`--format sarif` writes SARIF 2.1.0. `--format github` writes `::error` / `::warning` / `::notice` annotations.
+
+Other repos can run the composite action:
+
+```yaml
+- uses: ZenenContreras/a11ycn@v1
+  with:
+    path: .
+    fail-on: serious
+    format: github
+    lang: en
+```
+
+The action builds this repo and runs the CLI. It does not download a published npm package.
+
+## Publish to npm
+
+The `a11ycn` package is **not published**. It is ready for a later release:
+
+- `packages/cli/package.json` has `bin`, `files`, `repository`, `publishConfig.access`, and `publishConfig.provenance`.
+- Playwright is an optional peer dependency. axe-core is bundled as a dependency.
+- `.github/workflows/release.yml` runs only when someone starts it by hand (`workflow_dispatch`). It uses Changesets and `NPM_CONFIG_PROVENANCE=true`.
+- Add an `NPM_TOKEN` secret, then run the Release workflow. Do not expect a publish from merging to `main`.
+
+## Repository layout
+
+```text
+a11ycn/
+  action.yml                 composite GitHub Action
+  i18n/                      en.ts and es.ts, plus how to add a locale
+  skills/a11ycn/             SKILL.md, references, report schema, validator
+  packages/cli/              the a11ycn npm package
+  packages/eslint-plugin-a11ycn/
+  apps/demo/before|after/    seeded Next.js app and the fixed copy
+  fixtures/                  one bad and one good file per rule
+  test/                      Vitest suites
+  docs/demo/                 reports generated from the demo
+  .github/workflows/         CI and the manual release workflow
+```
+
+Shared tooling: `eslint.config.js`, `.prettierrc.json`, `tsconfig.base.json`, and the scripts in the root `package.json` (`lint`, `format`, `typecheck`, `test`, `build`, `demo:before`, `demo:after`).
+
+## Languages
+
+English is the default. Spanish covers CLI text, report headings, manual checks, and every finding message.
+
+```bash
+pnpm a11ycn audit ./app --lang es
+A11YCN_LANG=es pnpm a11ycn audit ./app
+```
+
+To add a language, see [i18n/README.md](i18n/README.md).
 
 ## What it does not do
 

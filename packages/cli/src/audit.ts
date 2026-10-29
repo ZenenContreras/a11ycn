@@ -1,12 +1,17 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { RULE_IDS } from "eslint-plugin-a11ycn";
+import { isIgnored, loadConfig } from "./config.js";
 import { buildFix } from "./fix.js";
+import { availableLocales, resolveLocale, t, translateField, type Locale } from "./i18n.js";
 import { MANUAL_CHECKS } from "./manual.js";
 import { renderConsole } from "./report/console.js";
+import { renderGithub } from "./report/github.js";
 import { renderJson } from "./report/json.js";
 import { renderMarkdown } from "./report/markdown.js";
+import { renderSarif } from "./report/sarif.js";
 import { failsThreshold, isSeverity, scoreFromFindings, SEVERITIES } from "./score.js";
+import { dedupeFindings, scanBrowser } from "./scan/browser.js";
 import { emptyCache, fingerprint, loadCache, saveCache } from "./scan/cache.js";
 import { createDisableMap } from "./scan/disable.js";
 import { collectFiles, resolveTargets } from "./scan/files.js";
@@ -19,17 +24,23 @@ const DOCS_ROOT = "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11
 
 export async function audit(options: AuditOptions): Promise<AuditResult> {
   const cwd = options.cwd ?? process.cwd();
-  const version = options.version ?? "0.1.0";
-  const rules = normalizeRules(options.rules);
-  const absoluteTargets = await resolveTargets(options.path, cwd);
-  const files = await collectFiles(absoluteTargets);
-  const project = await detectProject(absoluteTargets[0] ?? path.resolve(cwd, options.path));
+  const version = options.version ?? "0.2.0";
+  const config = await loadConfig(cwd);
+  const localeResult = resolveLocale({ flag: options.lang, config: config.lang });
+  const locale = localeResult.locale;
   const warnings: string[] = [];
-  if (options.url) {
-    warnings.push(
-      "Browser checks are not available in a11ycn 0.1.0. Continuing with the static scan.",
-    );
+  if (localeResult.error) {
+    throw new Error(t(locale, "cli.unknownLang", { value: localeResult.error, list: availableLocales().join(", ") }));
   }
+  const rules = normalizeRules(options.rules ?? (config.rules?.length ? config.rules : undefined));
+  const failOn = !options.failOnExplicit && config.failOn && isSeverity(config.failOn) ? config.failOn : options.failOn;
+  const inputs = options.path !== "." ? [options.path] : config.paths?.length ? config.paths : ["."];
+  const absoluteTargets = (await Promise.all(inputs.map((input) => resolveTargets(input, cwd)))).flat();
+  let files = await collectFiles(absoluteTargets);
+  if (config.ignore?.length) {
+    files = files.filter((file) => !isIgnored(toReportPath(file, cwd), config.ignore ?? []));
+  }
+  const project = await detectProject(absoluteTargets[0] ?? path.resolve(cwd, options.path));
 
   const cacheDir = options.cache ? (options.cacheDir ?? path.join(cwd, ".a11ycn")) : undefined;
   const cache = cacheDir ? await loadCache(cacheDir) : emptyCache();
@@ -51,7 +62,12 @@ export async function audit(options: AuditOptions): Promise<AuditResult> {
       const linted = lintSource(source, file, rules);
       if (linted.error) warnings.push(`${toReportPath(file, cwd)}: ${linted.error}`);
       const disabled = createDisableMap(source);
-      findings = linted.findings.filter((finding) => !disabled(finding.line, finding.ruleId));
+      findings = linted.findings
+        .filter((finding) => !disabled(finding.line, finding.ruleId))
+        .map((finding) => ({
+          ...finding,
+          snippet: finding.snippet ?? (source.split(/\r?\n/)[finding.line - 1] ?? "").trim(),
+        }));
       if (options.cache) {
         cache.entries[file] = { hash, findings };
         cacheDirty = true;
@@ -61,6 +77,16 @@ export async function audit(options: AuditOptions): Promise<AuditResult> {
   }
 
   if (rules.includes("page-title")) raw.push(...duplicateTitleFindings(sources));
+  const hasScrollPadding = sources.some((file) => /scroll-padding|scroll-pt-|scroll-mt-/.test(file.source));
+  const staticFindings = hasScrollPadding ? raw.filter((finding) => finding.ruleId !== "focus-not-obscured") : raw;
+  let combined = staticFindings;
+  if (options.url) {
+    const browser = options.browserScan ? await options.browserScan(options.url) : await scanBrowser(options.url);
+    if (browser.warning === "playwright-missing" || browser.warning === "axe-missing") {
+      warnings.push(t(locale, "cli.browserMissing"));
+    } else if (browser.warning) warnings.push(browser.warning);
+    combined = dedupeFindings(staticFindings, browser.findings);
+  }
   if (cacheDir && cacheDirty) {
     try {
       await saveCache(cacheDir, cache);
@@ -70,7 +96,7 @@ export async function audit(options: AuditOptions): Promise<AuditResult> {
   }
 
   const report = buildReport({
-    raw,
+    raw: combined,
     files,
     cwd,
     version,
@@ -80,23 +106,23 @@ export async function audit(options: AuditOptions): Promise<AuditResult> {
     framework: project.framework,
     shadcn: project.shadcn,
     sources,
+    locale,
   });
-  const exitCode = report.findings.some((finding) => failsThreshold(finding.severity, options.failOn))
-    ? 2
-    : 0;
-  return { report, exitCode, warnings, cacheHits };
+  const exitCode = report.findings.some((finding) => failsThreshold(finding.severity, failOn)) ? 2 : 0;
+  return { report, exitCode, warnings, cacheHits, locale };
 }
 
-export async function writeReport(report: Report, format: Format, outFile: string): Promise<void> {
-  const body = format === "json" ? renderJson(report) : renderMarkdown(report);
+export async function writeReport(report: Report, format: Format, outFile: string, locale: Locale = "en"): Promise<void> {
   await mkdir(path.dirname(path.resolve(outFile)), { recursive: true });
-  await writeFile(outFile, body, "utf8");
+  await writeFile(outFile, renderReport(report, format, locale), "utf8");
 }
 
-export function renderReport(report: Report, format: Format | "console"): string {
+export function renderReport(report: Report, format: Format | "console", locale: Locale = "en"): string {
   if (format === "json") return renderJson(report);
-  if (format === "md") return renderMarkdown(report);
-  return renderConsole(report);
+  if (format === "md") return renderMarkdown(report, locale);
+  if (format === "sarif") return renderSarif(report);
+  if (format === "github") return renderGithub(report);
+  return renderConsole(report, locale);
 }
 
 export function normalizeRules(rules: string[] | undefined): string[] {
@@ -126,6 +152,7 @@ function buildReport(input: {
   framework: Report["target"]["framework"];
   shadcn: boolean;
   sources: { file: string; source: string }[];
+  locale: Locale;
 }): Report {
   const sourceByFile = new Map(input.sources.map((file) => [file.file, file.source]));
   const findings: Finding[] = input.raw.map((finding) => {
@@ -135,23 +162,24 @@ function buildReport(input: {
     const fix = buildFix({
       file,
       line: finding.line,
-      lineText,
+      lineText: finding.snippet || lineText,
       ruleId: finding.ruleId,
       messageId: finding.messageId,
     });
+    fix.description = translateField(input.locale, finding.ruleId, finding.messageId, "fix", fix.description);
     return {
       id: "",
       ruleId: finding.ruleId,
       wcag: finding.wcag,
       severity: finding.severity,
       status: finding.status,
-      source: "static",
+      source: finding.file.startsWith("http") ? "browser" : "static",
       file,
       line: finding.line,
       column: finding.column,
-      snippet: snippetOf(lineText),
-      message: finding.message,
-      whoIsAffected: finding.whoIsAffected,
+      snippet: snippetOf(finding.snippet || lineText),
+      message: translateField(input.locale, finding.ruleId, finding.messageId, "message", finding.message),
+      whoIsAffected: translateField(input.locale, finding.ruleId, finding.messageId, "who", finding.whoIsAffected),
       fix,
       docs: `${DOCS_ROOT}#${finding.ruleId}`,
     };
@@ -183,7 +211,10 @@ function buildReport(input: {
     },
     summary,
     findings,
-    manualChecks: MANUAL_CHECKS.map((check) => ({ ...check })),
+    manualChecks: MANUAL_CHECKS.map((check) => ({
+      ...check,
+      notes: t(input.locale, `manual.${check.id}` as "manual.keyboard-only"),
+    })),
   };
 }
 

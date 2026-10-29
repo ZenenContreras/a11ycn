@@ -1,4 +1,4 @@
-export const TOOL_VERSION = "0.1.0";
+export const TOOL_VERSION = "0.2.0";
 
 export type Severity = "critical" | "serious" | "moderate" | "minor";
 export type FindingStatus = "confirmed" | "needs_review";
@@ -255,6 +255,267 @@ export const ruleCatalog: Record<string, RuleDefinition> = {
         whoIsAffected: targetUsers,
         fixDescription:
           "Check the rendered target is at least 24 by 24 CSS pixels, including padding.",
+      },
+    },
+  },
+  "text-contrast": {
+    id: "text-contrast",
+    wcag: [{ criterion: "1.4.3", name: "Contrast (Minimum)", level: "AA" }],
+    kind: "heuristic",
+    summary: "Text and its background need 4.5:1, or 3:1 for large text. Colors come from Tailwind classes and shadcn CSS variables.",
+    messages: {
+      low: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "People with low vision cannot read this text.",
+        fixDescription: "Darken the text or lighten the background until the contrast reaches the minimum.",
+      },
+      unresolved: {
+        severity: "moderate",
+        status: "needs_review",
+        whoIsAffected: "People with low vision may not be able to read this text.",
+        fixDescription: "Resolve the Tailwind or CSS variable colors and check the contrast.",
+      },
+    },
+  },
+  "non-text-contrast": {
+    id: "non-text-contrast",
+    wcag: [{ criterion: "1.4.11", name: "Non-text Contrast", level: "AA" }],
+    kind: "heuristic",
+    summary: "Borders and focus rings need 3:1 against the adjacent background.",
+    messages: {
+      low: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "People with low vision can miss borders and focus indicators.",
+        fixDescription: "Strengthen the border or ring color until it reaches 3:1.",
+      },
+      unresolved: {
+        severity: "moderate",
+        status: "needs_review",
+        whoIsAffected: "People with low vision can miss borders and focus indicators.",
+        fixDescription: "Check the rendered border or ring against its background.",
+      },
+    },
+  },
+  "form-error-association": {
+    id: "form-error-association",
+    wcag: [{ criterion: "3.3.1", name: "Error Identification", level: "A" }],
+    kind: "deterministic",
+    summary: "A visible error must be referenced by aria-describedby, and the field needs aria-invalid. shadcn FormMessage already does this.",
+    messages: {
+      missingAssociation: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "Screen reader users are not told which field failed or why.",
+        fixDescription: "Set aria-invalid and aria-describedby on the field, pointing at the error message.",
+      },
+    },
+  },
+  "input-autocomplete": {
+    id: "input-autocomplete",
+    wcag: [{ criterion: "1.3.5", name: "Identify Input Purpose", level: "AA" }],
+    kind: "deterministic",
+    summary: "Name, email, phone, address, and card fields need autoComplete.",
+    jsxA11y: "jsx-a11y/autocomplete-valid",
+    messages: {
+      missingAutocomplete: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "People using a password manager or who have cognitive disabilities cannot autofill the field.",
+        fixDescription: "Add autoComplete with the matching token, such as email or name.",
+      },
+    },
+  },
+  "heading-order": {
+    id: "heading-order",
+    wcag: [{ criterion: "1.3.1", name: "Info and Relationships", level: "A" }],
+    kind: "deterministic",
+    summary: "A page needs one h1 and headings should not skip levels.",
+    messages: {
+      missingH1: {
+        severity: "moderate",
+        status: "confirmed",
+        whoIsAffected: "Screen reader users navigating by heading cannot find the page topic.",
+        fixDescription: "Add one h1 that names the page.",
+      },
+      multipleH1: {
+        severity: "moderate",
+        status: "confirmed",
+        whoIsAffected: "Screen reader users hear more than one top-level heading.",
+        fixDescription: "Keep a single h1 and demote the others.",
+      },
+      skipped: {
+        severity: "moderate",
+        status: "confirmed",
+        whoIsAffected: "Screen reader users lose the structure of the page.",
+        fixDescription: "Do not skip heading levels.",
+      },
+    },
+  },
+  "landmarks-skip-link": {
+    id: "landmarks-skip-link",
+    wcag: [{ criterion: "2.4.1", name: "Bypass Blocks", level: "A" }],
+    kind: "deterministic",
+    summary: "Layouts need a skip link and pages need a main landmark.",
+    messages: {
+      missingSkip: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "Keyboard users must tab through the header on every page.",
+        fixDescription: "Add a skip link as the first focusable control, pointing at the main content.",
+      },
+      missingMain: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "Screen reader users cannot jump to the main content.",
+        fixDescription: "Wrap the page content in <main>.",
+      },
+    },
+  },
+  "focus-not-obscured": {
+    id: "focus-not-obscured",
+    wcag: [{ criterion: "2.4.11", name: "Focus Not Obscured (Minimum)", level: "AA" }],
+    kind: "heuristic",
+    summary: "A sticky or fixed header or footer can cover the focused element when the page has no scroll padding.",
+    messages: {
+      obscured: {
+        severity: "moderate",
+        status: "needs_review",
+        whoIsAffected: "Keyboard users can land on a control hidden behind a sticky bar.",
+        fixDescription: "Add scroll-pt-* or scroll-padding-top on the scrolling element so focus clears the bar.",
+      },
+    },
+  },
+  "dragging-alternative": {
+    id: "dragging-alternative",
+    wcag: [{ criterion: "2.5.7", name: "Dragging Movements", level: "AA" }],
+    kind: "heuristic",
+    summary: "Drag and drop needs a single-pointer alternative such as move up and move down buttons.",
+    messages: {
+      noAlternative: {
+        severity: "serious",
+        status: "needs_review",
+        whoIsAffected: "People who cannot drag have no way to reorder items.",
+        fixDescription: "Add buttons that move an item up and down.",
+      },
+    },
+  },
+  "no-positive-tabindex": {
+    id: "no-positive-tabindex",
+    wcag: [{ criterion: "2.4.3", name: "Focus Order", level: "A" }],
+    kind: "deterministic",
+    summary: "tabIndex greater than 0 fights the natural focus order.",
+    jsxA11y: "jsx-a11y/tabindex-no-positive",
+    messages: {
+      positive: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "Keyboard users encounter controls in an unexpected order.",
+        fixDescription: "Remove the positive tabIndex and order the controls in the DOM.",
+      },
+    },
+  },
+  "aria-valid": {
+    id: "aria-valid",
+    wcag: [{ criterion: "4.1.2", name: "Name, Role, Value", level: "A" }],
+    kind: "deterministic",
+    summary: "Roles and aria attributes must be valid, and aria-hidden must not sit on a focusable element.",
+    jsxA11y: "jsx-a11y/aria-role, jsx-a11y/aria-props, and jsx-a11y/role-supports-aria-props",
+    messages: {
+      invalidRole: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "Screen readers ignore or misread the element.",
+        fixDescription: "Use a valid ARIA role, or a native element that already has that role.",
+      },
+      badAria: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "Assistive technology ignores the misspelled attribute.",
+        fixDescription: "Correct the aria attribute name.",
+      },
+      hiddenFocusable: {
+        severity: "critical",
+        status: "confirmed",
+        whoIsAffected: "Keyboard users can focus something a screen reader will not announce.",
+        fixDescription: "Remove aria-hidden, or make the element unfocusable.",
+      },
+    },
+  },
+  "viewport-zoom": {
+    id: "viewport-zoom",
+    wcag: [{ criterion: "1.4.4", name: "Resize Text", level: "AA" }],
+    kind: "deterministic",
+    summary: "The viewport must not set user-scalable=no or maximum-scale=1.",
+    messages: {
+      zoomBlocked: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "People who need larger text cannot zoom the page.",
+        fixDescription: "Remove user-scalable=no and maximum-scale=1 from the viewport.",
+      },
+    },
+  },
+  "paste-blocked": {
+    id: "paste-blocked",
+    wcag: [{ criterion: "3.3.8", name: "Accessible Authentication (Minimum)", level: "AA" }],
+    kind: "deterministic",
+    summary: "Do not call preventDefault on paste for passwords or one-time codes.",
+    messages: {
+      pasteBlocked: {
+        severity: "serious",
+        status: "confirmed",
+        whoIsAffected: "People using a password manager cannot paste the password or code.",
+        fixDescription: "Allow paste. Remove preventDefault from onPaste.",
+      },
+      pasteReview: {
+        severity: "moderate",
+        status: "needs_review",
+        whoIsAffected: "People using a password manager may be blocked from pasting.",
+        fixDescription: "Confirm onPaste does not cancel the paste event.",
+      },
+    },
+  },
+  "reduced-motion": {
+    id: "reduced-motion",
+    wcag: [{ criterion: "2.3.3", name: "Animation from Interactions", level: "AAA" }],
+    kind: "heuristic",
+    summary: "animate-*, transition, and framer-motion need a motion-reduce or useReducedMotion path.",
+    messages: {
+      motion: {
+        severity: "minor",
+        status: "confirmed",
+        whoIsAffected: "People with vestibular disorders can get sick from motion they cannot turn off.",
+        fixDescription: "Add a motion-reduce: variant or branch on useReducedMotion.",
+      },
+    },
+  },
+  "media-captions": {
+    id: "media-captions",
+    wcag: [{ criterion: "1.2.2", name: "Captions (Prerecorded)", level: "A" }],
+    kind: "deterministic",
+    summary: "A video element needs a captions track.",
+    messages: {
+      missingCaptions: {
+        severity: "minor",
+        status: "confirmed",
+        whoIsAffected: "People who are deaf or hard of hearing cannot follow the video.",
+        fixDescription: "Add <track kind=\"captions\" src=\"...\" srcLang=\"en\" label=\"English\" />.",
+      },
+    },
+  },
+  "status-messages": {
+    id: "status-messages",
+    wcag: [{ criterion: "4.1.3", name: "Status Messages", level: "AA" }],
+    kind: "deterministic",
+    summary: "Toasts and banners need aria-live or role=\"status\". Sonner and the shadcn Toaster already do this.",
+    messages: {
+      noLive: {
+        severity: "minor",
+        status: "confirmed",
+        whoIsAffected: "Screen reader users are not told that the status changed.",
+        fixDescription: "Add role=\"status\" or aria-live=\"polite\".",
       },
     },
   },

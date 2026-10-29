@@ -1,5 +1,9 @@
 export const metadata = { title: "Dashboard" };
 
 export default function Page() {
-  return <h1>Dashboard</h1>;
+  return (
+    <main>
+      <h1>Dashboard</h1>
+    </main>
+  );
 }
