@@ -1,0 +1,723 @@
+{
+  "tool": "a11ycn",
+  "version": "0.1.0",
+  "generatedAt": "2026-10-29T01:15:30.177Z",
+  "target": {
+    "path": "apps/demo/before",
+    "url": null,
+    "framework": "next-app-router",
+    "shadcn": true
+  },
+  "summary": {
+    "score": 0,
+    "critical": 5,
+    "serious": 15,
+    "moderate": 4,
+    "minor": 0,
+    "filesScanned": 7
+  },
+  "findings": [
+    {
+      "id": "A11Y-0001",
+      "ruleId": "clickable-non-interactive",
+      "wcag": [
+        {
+          "criterion": "2.1.1",
+          "name": "Keyboard",
+          "level": "A"
+        },
+        {
+          "criterion": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A"
+        }
+      ],
+      "severity": "critical",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/dashboard/page.tsx",
+      "line": 8,
+      "column": 7,
+      "snippet": "<span onClick={() => {}}>Clear filters</span>",
+      "message": "Clickable <span> is not keyboard operable. Use a <button> instead.",
+      "whoIsAffected": "Keyboard users cannot reach or operate this control.",
+      "fix": {
+        "description": "Use a <button type=\"button\"> instead of a clickable div or span.",
+        "diff": "--- a/apps/demo/before/app/dashboard/page.tsx\t\n+++ b/apps/demo/before/app/dashboard/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <span onClick={() => {}}>Clear filters</span>\n+      <button type=\"button\" onClick={() => {}}>Clear filters</button>"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#clickable-non-interactive"
+    },
+    {
+      "id": "A11Y-0002",
+      "ruleId": "icon-button-name",
+      "wcag": [
+        {
+          "criterion": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A"
+        }
+      ],
+      "severity": "critical",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/dashboard/page.tsx",
+      "line": 9,
+      "column": 7,
+      "snippet": "<button type=\"button\" className=\"size-5\">",
+      "message": "Icon-only button has no accessible name.",
+      "whoIsAffected": "Screen reader users hear a control with no useful name.",
+      "fix": {
+        "description": "Add aria-label, or a <span className=\"sr-only\"> with the action name.",
+        "diff": "--- a/apps/demo/before/app/dashboard/page.tsx\t\n+++ b/apps/demo/before/app/dashboard/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <button type=\"button\" className=\"size-5\">\n+      <button aria-label=\"Describe this action\" type=\"button\" className=\"size-5\">"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#icon-button-name"
+    },
+    {
+      "id": "A11Y-0003",
+      "ruleId": "img-alt",
+      "wcag": [
+        {
+          "criterion": "1.1.1",
+          "name": "Non-text Content",
+          "level": "A"
+        }
+      ],
+      "severity": "critical",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/page.tsx",
+      "line": 12,
+      "column": 7,
+      "snippet": "<img src=\"/hero.png\" />",
+      "message": "Image has no alt attribute.",
+      "whoIsAffected": "Screen reader users cannot tell what the image is, or that it is there.",
+      "fix": {
+        "description": "Add an alt attribute that describes the image, or alt=\"\" if it is decorative.",
+        "diff": "--- a/apps/demo/before/app/page.tsx\t\n+++ b/apps/demo/before/app/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <img src=\"/hero.png\" />\n+      <img src=\"/hero.png\" alt=\"Describe this image\" />"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#img-alt"
+    },
+    {
+      "id": "A11Y-0004",
+      "ruleId": "clickable-non-interactive",
+      "wcag": [
+        {
+          "criterion": "2.1.1",
+          "name": "Keyboard",
+          "level": "A"
+        },
+        {
+          "criterion": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A"
+        }
+      ],
+      "severity": "critical",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/page.tsx",
+      "line": 17,
+      "column": 7,
+      "snippet": "<div onClick={() => {}}>View product tour</div>",
+      "message": "Clickable <div> is not keyboard operable. Use a <button> instead.",
+      "whoIsAffected": "Keyboard users cannot reach or operate this control.",
+      "fix": {
+        "description": "Use a <button type=\"button\"> instead of a clickable div or span.",
+        "diff": "--- a/apps/demo/before/app/page.tsx\t\n+++ b/apps/demo/before/app/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <div onClick={() => {}}>View product tour</div>\n+      <button type=\"button\" onClick={() => {}}>View product tour</button>"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#clickable-non-interactive"
+    },
+    {
+      "id": "A11Y-0005",
+      "ruleId": "icon-button-name",
+      "wcag": [
+        {
+          "criterion": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A"
+        }
+      ],
+      "severity": "critical",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/components/header.tsx",
+      "line": 11,
+      "column": 7,
+      "snippet": "<Button size=\"icon\" className=\"size-5\">",
+      "message": "Icon-only button has no accessible name.",
+      "whoIsAffected": "Screen reader users hear a control with no useful name.",
+      "fix": {
+        "description": "Add aria-label, or a <span className=\"sr-only\"> with the action name.",
+        "diff": "--- a/apps/demo/before/components/header.tsx\t\n+++ b/apps/demo/before/components/header.tsx\t\n@@ -1,1 +1,1 @@\n-      <Button size=\"icon\" className=\"size-5\">\n+      <Button aria-label=\"Describe this action\" size=\"icon\" className=\"size-5\">"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#icon-button-name"
+    },
+    {
+      "id": "A11Y-0006",
+      "ruleId": "page-title",
+      "wcag": [
+        {
+          "criterion": "2.4.2",
+          "name": "Page Titled",
+          "level": "A"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/dashboard/page.tsx",
+      "line": 1,
+      "column": 1,
+      "snippet": "import { Trash } from \"lucide-react\";",
+      "message": "Page or layout has no metadata.title or generateMetadata.",
+      "whoIsAffected": "Screen reader and browser users cannot tell which page or view they are on.",
+      "fix": {
+        "description": "Export metadata with a unique title, or export generateMetadata.",
+        "diff": "--- a/apps/demo/before/app/dashboard/page.tsx\t\n+++ b/apps/demo/before/app/dashboard/page.tsx\t\n@@ -1,1 +1,2 @@\n+export const metadata = { title: \"Describe this page\" };\n import { Trash } from \"lucide-react\";"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#page-title"
+    },
+    {
+      "id": "A11Y-0007",
+      "ruleId": "target-size",
+      "wcag": [
+        {
+          "criterion": "2.5.8",
+          "name": "Target Size (Minimum)",
+          "level": "AA"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/dashboard/page.tsx",
+      "line": 9,
+      "column": 7,
+      "snippet": "<button type=\"button\" className=\"size-5\">",
+      "message": "Clickable target is 20×20 CSS pixels, under the 24px minimum.",
+      "whoIsAffected": "People with limited precision, tremors, or who tap on a phone have a harder time hitting the control.",
+      "fix": {
+        "description": "Raise the fixed size to at least 24px (size-6, h-6 w-6) or add padding that brings the target to 24px.",
+        "diff": "--- a/apps/demo/before/app/dashboard/page.tsx\t\n+++ b/apps/demo/before/app/dashboard/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <button type=\"button\" className=\"size-5\">\n+      <button type=\"button\" className=\"size-6\">"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#target-size"
+    },
+    {
+      "id": "A11Y-0008",
+      "ruleId": "target-size",
+      "wcag": [
+        {
+          "criterion": "2.5.8",
+          "name": "Target Size (Minimum)",
+          "level": "AA"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/dashboard/page.tsx",
+      "line": 12,
+      "column": 7,
+      "snippet": "<a href=\"/projects/1/edit\" className=\"h-4 w-4\">",
+      "message": "Clickable target is 16×16 CSS pixels, under the 24px minimum.",
+      "whoIsAffected": "People with limited precision, tremors, or who tap on a phone have a harder time hitting the control.",
+      "fix": {
+        "description": "Raise the fixed size to at least 24px (size-6, h-6 w-6) or add padding that brings the target to 24px.",
+        "diff": "--- a/apps/demo/before/app/dashboard/page.tsx\t\n+++ b/apps/demo/before/app/dashboard/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <a href=\"/projects/1/edit\" className=\"h-4 w-4\">\n+      <a href=\"/projects/1/edit\" className=\"h-6 w-6\">"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#target-size"
+    },
+    {
+      "id": "A11Y-0009",
+      "ruleId": "html-lang",
+      "wcag": [
+        {
+          "criterion": "3.1.1",
+          "name": "Language of Page",
+          "level": "A"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/layout.tsx",
+      "line": 8,
+      "column": 5,
+      "snippet": "<html>",
+      "message": "<html> is missing a lang attribute.",
+      "whoIsAffected": "Screen readers may pronounce the page in the wrong language.",
+      "fix": {
+        "description": "Set lang on <html>, for example <html lang=\"en\">.",
+        "diff": "--- a/apps/demo/before/app/layout.tsx\t\n+++ b/apps/demo/before/app/layout.tsx\t\n@@ -1,1 +1,1 @@\n-    <html>\n+    <html lang=\"en\">"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#html-lang"
+    },
+    {
+      "id": "A11Y-0010",
+      "ruleId": "img-alt",
+      "wcag": [
+        {
+          "criterion": "1.1.1",
+          "name": "Non-text Content",
+          "level": "A"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/page.tsx",
+      "line": 13,
+      "column": 7,
+      "snippet": "<img src=\"/banner.png\" alt=\"banner.png\" />",
+      "message": "Image alt is a filename (\"banner.png\"), not a description.",
+      "whoIsAffected": "Screen reader users hear a filename instead of a description.",
+      "fix": {
+        "description": "Replace the filename alt with a short description of the image.",
+        "diff": "--- a/apps/demo/before/app/page.tsx\t\n+++ b/apps/demo/before/app/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <img src=\"/banner.png\" alt=\"banner.png\" />\n+      <img src=\"/banner.png\" alt=\"Describe this image\" />"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#img-alt"
+    },
+    {
+      "id": "A11Y-0011",
+      "ruleId": "img-alt",
+      "wcag": [
+        {
+          "criterion": "1.1.1",
+          "name": "Non-text Content",
+          "level": "A"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/page.tsx",
+      "line": 14,
+      "column": 7,
+      "snippet": "<Image src=\"/photo.jpg\" alt=\"image\" width={960} height={540} />",
+      "message": "Image alt is a generic word (\"image\"), not a description.",
+      "whoIsAffected": "Screen reader users hear a generic word instead of what the image shows.",
+      "fix": {
+        "description": "Replace the generic alt with a short description of the image.",
+        "diff": "--- a/apps/demo/before/app/page.tsx\t\n+++ b/apps/demo/before/app/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <Image src=\"/photo.jpg\" alt=\"image\" width={960} height={540} />\n+      <Image src=\"/photo.jpg\" alt=\"Describe this image\" width={960} height={540} />"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#img-alt"
+    },
+    {
+      "id": "A11Y-0012",
+      "ruleId": "focus-visible-removed",
+      "wcag": [
+        {
+          "criterion": "2.4.7",
+          "name": "Focus Visible",
+          "level": "AA"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/page.tsx",
+      "line": 16,
+      "column": 7,
+      "snippet": "<button className=\"outline-none\">Get started</button>",
+      "message": "Focus outline is removed without a focus-visible:ring or focus-visible:outline replacement.",
+      "whoIsAffected": "Keyboard users cannot see which element has focus.",
+      "fix": {
+        "description": "Add focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2, or another focus-visible outline.",
+        "diff": "--- a/apps/demo/before/app/page.tsx\t\n+++ b/apps/demo/before/app/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <button className=\"outline-none\">Get started</button>\n+      <button className=\"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none\">Get started</button>"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#focus-visible-removed"
+    },
+    {
+      "id": "A11Y-0013",
+      "ruleId": "link-name",
+      "wcag": [
+        {
+          "criterion": "2.4.4",
+          "name": "Link Purpose (In Context)",
+          "level": "A"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/page.tsx",
+      "line": 19,
+      "column": 7,
+      "snippet": "<Link href=\"/settings\">",
+      "message": "Icon-only link has no accessible name.",
+      "whoIsAffected": "Screen reader users hear a link with no useful destination when links are read out of context.",
+      "fix": {
+        "description": "Add an aria-label or a <span className=\"sr-only\"> that names the destination.",
+        "diff": "--- a/apps/demo/before/app/page.tsx\t\n+++ b/apps/demo/before/app/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <Link href=\"/settings\">\n+      <Link aria-label=\"Describe the destination\" href=\"/settings\">"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#link-name"
+    },
+    {
+      "id": "A11Y-0014",
+      "ruleId": "form-label",
+      "wcag": [
+        {
+          "criterion": "1.3.1",
+          "name": "Info and Relationships",
+          "level": "A"
+        },
+        {
+          "criterion": "3.3.2",
+          "name": "Labels or Instructions",
+          "level": "A"
+        },
+        {
+          "criterion": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/register/page.tsx",
+      "line": 11,
+      "column": 7,
+      "snippet": "<Input placeholder=\"Email\" />",
+      "message": "Form control has no label. Placeholder text is not a label.",
+      "whoIsAffected": "Screen reader users are not told what to enter. A placeholder disappears while typing and is not a label.",
+      "fix": {
+        "description": "Add a Label with htmlFor matching the control id, aria-label, or a FormLabel inside the same FormItem.",
+        "diff": "--- a/apps/demo/before/app/register/page.tsx\t\n+++ b/apps/demo/before/app/register/page.tsx\t\n@@ -1,1 +1,2 @@\n-      <Input placeholder=\"Email\" />\n+<Label htmlFor=\"email\">Email</Label>\n+      <Input id=\"email\" placeholder=\"Email\" />"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#form-label"
+    },
+    {
+      "id": "A11Y-0015",
+      "ruleId": "form-label",
+      "wcag": [
+        {
+          "criterion": "1.3.1",
+          "name": "Info and Relationships",
+          "level": "A"
+        },
+        {
+          "criterion": "3.3.2",
+          "name": "Labels or Instructions",
+          "level": "A"
+        },
+        {
+          "criterion": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/register/page.tsx",
+      "line": 12,
+      "column": 7,
+      "snippet": "<Input placeholder=\"Password\" type=\"password\" />",
+      "message": "Form control has no label. Placeholder text is not a label.",
+      "whoIsAffected": "Screen reader users are not told what to enter. A placeholder disappears while typing and is not a label.",
+      "fix": {
+        "description": "Add a Label with htmlFor matching the control id, aria-label, or a FormLabel inside the same FormItem.",
+        "diff": "--- a/apps/demo/before/app/register/page.tsx\t\n+++ b/apps/demo/before/app/register/page.tsx\t\n@@ -1,1 +1,2 @@\n-      <Input placeholder=\"Password\" type=\"password\" />\n+<Label htmlFor=\"password\">Password</Label>\n+      <Input id=\"password\" placeholder=\"Password\" type=\"password\" />"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#form-label"
+    },
+    {
+      "id": "A11Y-0016",
+      "ruleId": "form-label",
+      "wcag": [
+        {
+          "criterion": "1.3.1",
+          "name": "Info and Relationships",
+          "level": "A"
+        },
+        {
+          "criterion": "3.3.2",
+          "name": "Labels or Instructions",
+          "level": "A"
+        },
+        {
+          "criterion": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/register/page.tsx",
+      "line": 13,
+      "column": 7,
+      "snippet": "<Textarea placeholder=\"About you\" />",
+      "message": "Form control has no label. Placeholder text is not a label.",
+      "whoIsAffected": "Screen reader users are not told what to enter. A placeholder disappears while typing and is not a label.",
+      "fix": {
+        "description": "Add a Label with htmlFor matching the control id, aria-label, or a FormLabel inside the same FormItem.",
+        "diff": "--- a/apps/demo/before/app/register/page.tsx\t\n+++ b/apps/demo/before/app/register/page.tsx\t\n@@ -1,1 +1,2 @@\n-      <Textarea placeholder=\"About you\" />\n+<Label htmlFor=\"about-you\">About you</Label>\n+      <Textarea id=\"about-you\" placeholder=\"About you\" />"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#form-label"
+    },
+    {
+      "id": "A11Y-0017",
+      "ruleId": "form-label",
+      "wcag": [
+        {
+          "criterion": "1.3.1",
+          "name": "Info and Relationships",
+          "level": "A"
+        },
+        {
+          "criterion": "3.3.2",
+          "name": "Labels or Instructions",
+          "level": "A"
+        },
+        {
+          "criterion": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/register/page.tsx",
+      "line": 14,
+      "column": 7,
+      "snippet": "<Checkbox />",
+      "message": "Form control has no label. Placeholder text is not a label.",
+      "whoIsAffected": "Screen reader users are not told what to enter. A placeholder disappears while typing and is not a label.",
+      "fix": {
+        "description": "Add a Label with htmlFor matching the control id, aria-label, or a FormLabel inside the same FormItem.",
+        "diff": "--- a/apps/demo/before/app/register/page.tsx\t\n+++ b/apps/demo/before/app/register/page.tsx\t\n@@ -1,1 +1,2 @@\n-      <Checkbox />\n+<Label htmlFor=\"label\">Label</Label>\n+      <Checkbox id=\"label\" />"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#form-label"
+    },
+    {
+      "id": "A11Y-0018",
+      "ruleId": "dialog-title",
+      "wcag": [
+        {
+          "criterion": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A"
+        },
+        {
+          "criterion": "1.3.1",
+          "name": "Info and Relationships",
+          "level": "A"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/components/delete-dialog.tsx",
+      "line": 9,
+      "column": 7,
+      "snippet": "<DialogContent>",
+      "message": "DialogContent has no DialogTitle.",
+      "whoIsAffected": "Screen reader users are not told which dialog opened.",
+      "fix": {
+        "description": "Add DialogTitle, AlertDialogTitle, SheetTitle, or DrawerTitle. Wrap it in VisuallyHidden if it should not be shown.",
+        "diff": "--- a/apps/demo/before/components/delete-dialog.tsx\t\n+++ b/apps/demo/before/components/delete-dialog.tsx\t\n@@ -1,1 +1,3 @@\n       <DialogContent>\n+<DialogTitle>Describe this dialog</DialogTitle>\n+<DialogDescription>Explain the purpose of this dialog.</DialogDescription>"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#dialog-title"
+    },
+    {
+      "id": "A11Y-0019",
+      "ruleId": "focus-visible-removed",
+      "wcag": [
+        {
+          "criterion": "2.4.7",
+          "name": "Focus Visible",
+          "level": "AA"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/components/header.tsx",
+      "line": 8,
+      "column": 7,
+      "snippet": "<Link href=\"/\" className=\"focus:outline-none\">",
+      "message": "Focus outline is removed without a focus-visible:ring or focus-visible:outline replacement.",
+      "whoIsAffected": "Keyboard users cannot see which element has focus.",
+      "fix": {
+        "description": "Add focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2, or another focus-visible outline.",
+        "diff": "--- a/apps/demo/before/components/header.tsx\t\n+++ b/apps/demo/before/components/header.tsx\t\n@@ -1,1 +1,1 @@\n-      <Link href=\"/\" className=\"focus:outline-none\">\n+      <Link href=\"/\" className=\"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus:outline-none\">"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#focus-visible-removed"
+    },
+    {
+      "id": "A11Y-0020",
+      "ruleId": "target-size",
+      "wcag": [
+        {
+          "criterion": "2.5.8",
+          "name": "Target Size (Minimum)",
+          "level": "AA"
+        }
+      ],
+      "severity": "serious",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/components/header.tsx",
+      "line": 11,
+      "column": 7,
+      "snippet": "<Button size=\"icon\" className=\"size-5\">",
+      "message": "Clickable target is 20×20 CSS pixels, under the 24px minimum.",
+      "whoIsAffected": "People with limited precision, tremors, or who tap on a phone have a harder time hitting the control.",
+      "fix": {
+        "description": "Raise the fixed size to at least 24px (size-6, h-6 w-6) or add padding that brings the target to 24px.",
+        "diff": "--- a/apps/demo/before/components/header.tsx\t\n+++ b/apps/demo/before/components/header.tsx\t\n@@ -1,1 +1,1 @@\n-      <Button size=\"icon\" className=\"size-5\">\n+      <Button size=\"icon\" className=\"size-6\">"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#target-size"
+    },
+    {
+      "id": "A11Y-0021",
+      "ruleId": "page-title",
+      "wcag": [
+        {
+          "criterion": "2.4.2",
+          "name": "Page Titled",
+          "level": "A"
+        }
+      ],
+      "severity": "moderate",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/page.tsx",
+      "line": 6,
+      "column": 1,
+      "snippet": "export const metadata = { title: \"Harbor\" };",
+      "message": "Page title \"Harbor\" is used by 2 routes.",
+      "whoIsAffected": "People using multiple tabs or a screen reader cannot tell these routes apart.",
+      "fix": {
+        "description": "Give each route a title that names that specific page.",
+        "diff": "--- a/apps/demo/before/app/page.tsx\t\n+++ b/apps/demo/before/app/page.tsx\t\n@@ -1,1 +1,1 @@\n-export const metadata = { title: \"Harbor\" };\n+export const metadata = { title: \"Describe this page\" };"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#page-title"
+    },
+    {
+      "id": "A11Y-0022",
+      "ruleId": "link-name",
+      "wcag": [
+        {
+          "criterion": "2.4.4",
+          "name": "Link Purpose (In Context)",
+          "level": "A"
+        }
+      ],
+      "severity": "moderate",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/page.tsx",
+      "line": 18,
+      "column": 7,
+      "snippet": "<Link href=\"/blog/welcome\">Read more</Link>",
+      "message": "Link text \"read more\" does not describe its destination.",
+      "whoIsAffected": "Screen reader users hear a link with no useful destination when links are read out of context.",
+      "fix": {
+        "description": "Replace the generic phrase with text that names the destination.",
+        "diff": "--- a/apps/demo/before/app/page.tsx\t\n+++ b/apps/demo/before/app/page.tsx\t\n@@ -1,1 +1,1 @@\n-      <Link href=\"/blog/welcome\">Read more</Link>\n+      <Link href=\"/blog/welcome\">Describe the destination</Link>"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#link-name"
+    },
+    {
+      "id": "A11Y-0023",
+      "ruleId": "page-title",
+      "wcag": [
+        {
+          "criterion": "2.4.2",
+          "name": "Page Titled",
+          "level": "A"
+        }
+      ],
+      "severity": "moderate",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/app/register/page.tsx",
+      "line": 5,
+      "column": 1,
+      "snippet": "export const metadata = { title: \"Harbor\" };",
+      "message": "Page title \"Harbor\" is used by 2 routes.",
+      "whoIsAffected": "People using multiple tabs or a screen reader cannot tell these routes apart.",
+      "fix": {
+        "description": "Give each route a title that names that specific page.",
+        "diff": "--- a/apps/demo/before/app/register/page.tsx\t\n+++ b/apps/demo/before/app/register/page.tsx\t\n@@ -1,1 +1,1 @@\n-export const metadata = { title: \"Harbor\" };\n+export const metadata = { title: \"Describe this page\" };"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#page-title"
+    },
+    {
+      "id": "A11Y-0024",
+      "ruleId": "dialog-title",
+      "wcag": [
+        {
+          "criterion": "4.1.2",
+          "name": "Name, Role, Value",
+          "level": "A"
+        },
+        {
+          "criterion": "1.3.1",
+          "name": "Info and Relationships",
+          "level": "A"
+        }
+      ],
+      "severity": "moderate",
+      "status": "confirmed",
+      "source": "static",
+      "file": "apps/demo/before/components/delete-dialog.tsx",
+      "line": 9,
+      "column": 7,
+      "snippet": "<DialogContent>",
+      "message": "DialogContent has no DialogDescription.",
+      "whoIsAffected": "Screen reader users may not hear what the dialog is for beyond its name.",
+      "fix": {
+        "description": "Add DialogDescription (or the matching Sheet, Drawer, or AlertDialog description).",
+        "diff": "--- a/apps/demo/before/components/delete-dialog.tsx\t\n+++ b/apps/demo/before/components/delete-dialog.tsx\t\n@@ -1,1 +1,2 @@\n       <DialogContent>\n+<DialogDescription>Explain the purpose of this dialog.</DialogDescription>"
+      },
+      "docs": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#dialog-title"
+    }
+  ],
+  "manualChecks": [
+    {
+      "id": "keyboard-only",
+      "status": "todo",
+      "notes": "Complete the main task using only the keyboard."
+    },
+    {
+      "id": "focus-order",
+      "status": "todo",
+      "notes": "Confirm tab order follows the visual order."
+    },
+    {
+      "id": "focus-trap-dialog",
+      "status": "todo",
+      "notes": "Confirm focus stays inside an open dialog, sheet, or drawer."
+    },
+    {
+      "id": "escape-closes-dialog",
+      "status": "todo",
+      "notes": "Confirm Escape closes the topmost dialog and restores focus."
+    },
+    {
+      "id": "meaningful-alt",
+      "status": "todo",
+      "notes": "Confirm alt text describes the purpose of the image, not only that an attribute exists."
+    },
+    {
+      "id": "live-announcements",
+      "status": "todo",
+      "notes": "Confirm status messages are announced without stealing focus."
+    },
+    {
+      "id": "focus-not-obscured",
+      "status": "todo",
+      "notes": "Confirm sticky headers and footers do not cover the focused element."
+    },
+    {
+      "id": "zoom-reflow",
+      "status": "todo",
+      "notes": "Confirm the page still works at 200% zoom."
+    }
+  ]
+}

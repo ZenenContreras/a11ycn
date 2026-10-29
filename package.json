@@ -1,0 +1,32 @@
+{
+  "name": "a11ycn-workspace",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.4",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm --filter eslint-plugin-a11ycn build && pnpm --filter a11ycn build",
+    "typecheck": "tsc -p packages/eslint-plugin-a11ycn/tsconfig.json --noEmit && tsc -p packages/cli/tsconfig.json --noEmit && tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "a11ycn": "node packages/cli/dist/index.js",
+    "demo:before": "node packages/cli/dist/index.js audit apps/demo/before --format md --out docs/demo/before.md && node packages/cli/dist/index.js audit apps/demo/before --format json --out docs/demo/before.json",
+    "demo:after": "node packages/cli/dist/index.js audit apps/demo/after --format md --out docs/demo/after.md && node packages/cli/dist/index.js audit apps/demo/after --format json --out docs/demo/after.json"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^22.19.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.39.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2",
+    "vitest": "^3.2.4"
+  }
+}

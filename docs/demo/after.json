@@ -1,0 +1,62 @@
+{
+  "tool": "a11ycn",
+  "version": "0.1.0",
+  "generatedAt": "2026-10-29T01:15:31.482Z",
+  "target": {
+    "path": "apps/demo/after",
+    "url": null,
+    "framework": "next-app-router",
+    "shadcn": true
+  },
+  "summary": {
+    "score": 100,
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0,
+    "filesScanned": 7
+  },
+  "findings": [],
+  "manualChecks": [
+    {
+      "id": "keyboard-only",
+      "status": "todo",
+      "notes": "Complete the main task using only the keyboard."
+    },
+    {
+      "id": "focus-order",
+      "status": "todo",
+      "notes": "Confirm tab order follows the visual order."
+    },
+    {
+      "id": "focus-trap-dialog",
+      "status": "todo",
+      "notes": "Confirm focus stays inside an open dialog, sheet, or drawer."
+    },
+    {
+      "id": "escape-closes-dialog",
+      "status": "todo",
+      "notes": "Confirm Escape closes the topmost dialog and restores focus."
+    },
+    {
+      "id": "meaningful-alt",
+      "status": "todo",
+      "notes": "Confirm alt text describes the purpose of the image, not only that an attribute exists."
+    },
+    {
+      "id": "live-announcements",
+      "status": "todo",
+      "notes": "Confirm status messages are announced without stealing focus."
+    },
+    {
+      "id": "focus-not-obscured",
+      "status": "todo",
+      "notes": "Confirm sticky headers and footers do not cover the focused element."
+    },
+    {
+      "id": "zoom-reflow",
+      "status": "todo",
+      "notes": "Confirm the page still works at 200% zoom."
+    }
+  ]
+}
