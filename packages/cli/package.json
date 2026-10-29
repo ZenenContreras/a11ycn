@@ -1,0 +1,40 @@
+{
+  "name": "a11ycn",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Deterministic WCAG 2.2 audits for React, Next.js, Tailwind, and shadcn/ui. No API key.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "a11ycn": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
+  "files": ["dist"],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@typescript-eslint/parser": "^8.46.2",
+    "commander": "^12.1.0",
+    "diff": "^7.0.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-a11ycn": "workspace:*",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3"
+  }
+}

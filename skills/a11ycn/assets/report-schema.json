@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/assets/report-schema.json",
+  "title": "a11ycn report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tool", "version", "generatedAt", "target", "summary", "findings", "manualChecks"],
+  "properties": {
+    "tool": { "const": "a11ycn" },
+    "version": { "type": "string", "minLength": 1 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "url", "framework", "shadcn"],
+      "properties": {
+        "path": { "type": "string" },
+        "url": { "type": ["string", "null"] },
+        "framework": {
+          "enum": ["next-app-router", "next-pages", "vite-react", "unknown"]
+        },
+        "shadcn": { "type": "boolean" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "critical", "serious", "moderate", "minor", "filesScanned"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "critical": { "type": "integer", "minimum": 0 },
+        "serious": { "type": "integer", "minimum": 0 },
+        "moderate": { "type": "integer", "minimum": 0 },
+        "minor": { "type": "integer", "minimum": 0 },
+        "filesScanned": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "manualChecks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/manualCheck" }
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "ruleId",
+        "wcag",
+        "severity",
+        "status",
+        "source",
+        "file",
+        "line",
+        "column",
+        "snippet",
+        "message",
+        "whoIsAffected",
+        "fix",
+        "docs"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^A11Y-[0-9]{4,}$" },
+        "ruleId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "wcag": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["criterion", "name", "level"],
+            "properties": {
+              "criterion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+              "name": { "type": "string", "minLength": 1 },
+              "level": { "enum": ["A", "AA", "AAA"] }
+            }
+          }
+        },
+        "severity": { "enum": ["critical", "serious", "moderate", "minor"] },
+        "status": { "enum": ["confirmed", "needs_review"] },
+        "source": { "enum": ["static", "browser", "manual"] },
+        "file": { "type": "string", "minLength": 1 },
+        "line": { "type": "integer", "minimum": 1 },
+        "column": { "type": "integer", "minimum": 1 },
+        "snippet": { "type": "string" },
+        "message": { "type": "string" },
+        "whoIsAffected": { "type": "string" },
+        "fix": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["description", "diff"],
+          "properties": {
+            "description": { "type": "string" },
+            "diff": { "type": "string" }
+          }
+        },
+        "docs": { "type": "string", "minLength": 1 }
+      }
+    },
+    "manualCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "notes"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["todo", "pass", "fail"] },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

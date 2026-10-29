@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+.a11ycn
+.next
+*.tsbuildinfo
+.DS_Store
