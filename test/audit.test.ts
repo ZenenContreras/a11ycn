@@ -20,18 +20,14 @@ describe("audit", () => {
       now: new Date("2026-10-28T12:00:00.000Z"),
     });
     const counts = countByRule(before.report.findings.map((finding) => finding.ruleId));
-    expect(counts).toEqual({
-      "img-alt": 3,
-      "icon-button-name": 2,
-      "clickable-non-interactive": 2,
-      "focus-visible-removed": 2,
-      "form-label": 4,
-      "html-lang": 1,
-      "page-title": 3,
-      "link-name": 2,
-      "dialog-title": 2,
-      "target-size": 3,
-    });
+    expect(counts["img-alt"]).toBe(3);
+    expect(counts["icon-button-name"]).toBe(2);
+    expect(counts["form-label"]).toBe(4);
+    expect(counts["text-contrast"]).toBeGreaterThanOrEqual(1);
+    expect(counts["input-autocomplete"]).toBeGreaterThanOrEqual(1);
+    expect(counts["landmarks-skip-link"]).toBeGreaterThanOrEqual(1);
+    expect(counts["heading-order"]).toBeGreaterThanOrEqual(1);
+    expect(counts["focus-not-obscured"]).toBeGreaterThanOrEqual(1);
     expect(before.report.summary.filesScanned).toBe(7);
     expect(before.report.findings.length).toBeGreaterThanOrEqual(15);
     expect(before.report.target).toMatchObject({

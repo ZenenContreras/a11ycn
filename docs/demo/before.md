@@ -8,8 +8,8 @@ Framework: next-app-router. shadcn/ui: yes.
 | Severity | Count |
 | --- | --- |
 | critical | 5 |
-| serious | 15 |
-| moderate | 4 |
+| serious | 20 |
+| moderate | 6 |
 | minor | 0 |
 
 ## Critical
@@ -33,8 +33,8 @@ Framework: next-app-router. shadcn/ui: yes.
 --- a/apps/demo/before/app/dashboard/page.tsx	
 +++ b/apps/demo/before/app/dashboard/page.tsx	
 @@ -1,1 +1,1 @@
--      <span onClick={() => {}}>Clear filters</span>
-+      <button type="button" onClick={() => {}}>Clear filters</button>
+-<span onClick={() => {}}>Clear filters</span>
++<button type="button" onClick={() => {}}>Clear filters</button>
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#clickable-non-interactive
@@ -58,8 +58,8 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/dashboard/page.tsx	
 +++ b/apps/demo/before/app/dashboard/page.tsx	
 @@ -1,1 +1,1 @@
--      <button type="button" className="size-5">
-+      <button aria-label="Describe this action" type="button" className="size-5">
+-<button type="button" className="size-5">
++<button aria-label="Describe this action" type="button" className="size-5">
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#icon-button-name
@@ -83,8 +83,8 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/page.tsx	
 +++ b/apps/demo/before/app/page.tsx	
 @@ -1,1 +1,1 @@
--      <img src="/hero.png" />
-+      <img src="/hero.png" alt="Describe this image" />
+-<img src="/hero.png" />
++<img src="/hero.png" alt="Describe this image" />
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#img-alt
@@ -108,8 +108,8 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/page.tsx	
 +++ b/apps/demo/before/app/page.tsx	
 @@ -1,1 +1,1 @@
--      <div onClick={() => {}}>View product tour</div>
-+      <button type="button" onClick={() => {}}>View product tour</button>
+-<div onClick={() => {}}>View product tour</div>
++<button type="button" onClick={() => {}}>View product tour</button>
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#clickable-non-interactive
@@ -133,8 +133,8 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/components/header.tsx	
 +++ b/apps/demo/before/components/header.tsx	
 @@ -1,1 +1,1 @@
--      <Button size="icon" className="size-5">
-+      <Button aria-label="Describe this action" size="icon" className="size-5">
+-<Button size="icon" className="size-5">
++<Button aria-label="Describe this action" size="icon" className="size-5">
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#icon-button-name
@@ -185,8 +185,8 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/dashboard/page.tsx	
 +++ b/apps/demo/before/app/dashboard/page.tsx	
 @@ -1,1 +1,1 @@
--      <button type="button" className="size-5">
-+      <button type="button" className="size-6">
+-<button type="button" className="size-5">
++<button type="button" className="size-6">
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#target-size
@@ -210,13 +210,35 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/dashboard/page.tsx	
 +++ b/apps/demo/before/app/dashboard/page.tsx	
 @@ -1,1 +1,1 @@
--      <a href="/projects/1/edit" className="h-4 w-4">
-+      <a href="/projects/1/edit" className="h-6 w-6">
+-<a href="/projects/1/edit" className="h-4 w-4">
++<a href="/projects/1/edit" className="h-6 w-6">
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#target-size
 
-### A11Y-0009 html-lang
+### A11Y-0009 landmarks-skip-link
+
+- **WCAG:** 2.4.1 Bypass Blocks (A)
+- **File:** apps/demo/before/app/layout.tsx:1:1
+- **Status:** confirmed
+- **Source:** static
+- **Message:** Layout has no skip link.
+- **Who is affected:** Keyboard users must tab through the header on every page.
+
+```tsx
+import type { ReactNode } from "react";
+```
+
+**Fix:** Add a skip link as the first focusable control, pointing at the main content.
+
+```diff
+--- a/apps/demo/before/app/layout.tsx	
++++ b/apps/demo/before/app/layout.tsx
+```
+
+Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#landmarks-skip-link
+
+### A11Y-0010 html-lang
 
 - **WCAG:** 3.1.1 Language of Page (A)
 - **File:** apps/demo/before/app/layout.tsx:8:5
@@ -235,13 +257,35 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/layout.tsx	
 +++ b/apps/demo/before/app/layout.tsx	
 @@ -1,1 +1,1 @@
--    <html>
-+    <html lang="en">
+-<html>
++<html lang="en">
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#html-lang
 
-### A11Y-0010 img-alt
+### A11Y-0011 landmarks-skip-link
+
+- **WCAG:** 2.4.1 Bypass Blocks (A)
+- **File:** apps/demo/before/app/page.tsx:1:1
+- **Status:** confirmed
+- **Source:** static
+- **Message:** Page has no <main> landmark.
+- **Who is affected:** Screen reader users cannot jump to the main content.
+
+```tsx
+import Image from "next/image";
+```
+
+**Fix:** Wrap the page content in <main>.
+
+```diff
+--- a/apps/demo/before/app/page.tsx	
++++ b/apps/demo/before/app/page.tsx
+```
+
+Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#landmarks-skip-link
+
+### A11Y-0012 img-alt
 
 - **WCAG:** 1.1.1 Non-text Content (A)
 - **File:** apps/demo/before/app/page.tsx:13:7
@@ -260,13 +304,13 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/page.tsx	
 +++ b/apps/demo/before/app/page.tsx	
 @@ -1,1 +1,1 @@
--      <img src="/banner.png" alt="banner.png" />
-+      <img src="/banner.png" alt="Describe this image" />
+-<img src="/banner.png" alt="banner.png" />
++<img src="/banner.png" alt="Describe this image" />
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#img-alt
 
-### A11Y-0011 img-alt
+### A11Y-0013 img-alt
 
 - **WCAG:** 1.1.1 Non-text Content (A)
 - **File:** apps/demo/before/app/page.tsx:14:7
@@ -285,13 +329,35 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/page.tsx	
 +++ b/apps/demo/before/app/page.tsx	
 @@ -1,1 +1,1 @@
--      <Image src="/photo.jpg" alt="image" width={960} height={540} />
-+      <Image src="/photo.jpg" alt="Describe this image" width={960} height={540} />
+-<Image src="/photo.jpg" alt="image" width={960} height={540} />
++<Image src="/photo.jpg" alt="Describe this image" width={960} height={540} />
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#img-alt
 
-### A11Y-0012 focus-visible-removed
+### A11Y-0014 text-contrast
+
+- **WCAG:** 1.4.3 Contrast (Minimum) (AA)
+- **File:** apps/demo/before/app/page.tsx:15:7
+- **Status:** confirmed
+- **Source:** static
+- **Message:** Text contrast is 2.54:1, below the 4.5:1 minimum.
+- **Who is affected:** People with low vision cannot read this text.
+
+```tsx
+<p className="bg-white text-gray-400">A quieter inbox for small teams.</p>
+```
+
+**Fix:** Darken the text or lighten the background until the contrast reaches the minimum.
+
+```diff
+--- a/apps/demo/before/app/page.tsx	
++++ b/apps/demo/before/app/page.tsx
+```
+
+Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#text-contrast
+
+### A11Y-0015 focus-visible-removed
 
 - **WCAG:** 2.4.7 Focus Visible (AA)
 - **File:** apps/demo/before/app/page.tsx:16:7
@@ -310,13 +376,13 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/page.tsx	
 +++ b/apps/demo/before/app/page.tsx	
 @@ -1,1 +1,1 @@
--      <button className="outline-none">Get started</button>
-+      <button className="focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none">Get started</button>
+-<button className="outline-none">Get started</button>
++<button className="focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 outline-none">Get started</button>
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#focus-visible-removed
 
-### A11Y-0013 link-name
+### A11Y-0016 link-name
 
 - **WCAG:** 2.4.4 Link Purpose (In Context) (A)
 - **File:** apps/demo/before/app/page.tsx:19:7
@@ -335,13 +401,35 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/page.tsx	
 +++ b/apps/demo/before/app/page.tsx	
 @@ -1,1 +1,1 @@
--      <Link href="/settings">
-+      <Link aria-label="Describe the destination" href="/settings">
+-<Link href="/settings">
++<Link aria-label="Describe the destination" href="/settings">
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#link-name
 
-### A11Y-0014 form-label
+### A11Y-0017 landmarks-skip-link
+
+- **WCAG:** 2.4.1 Bypass Blocks (A)
+- **File:** apps/demo/before/app/register/page.tsx:1:1
+- **Status:** confirmed
+- **Source:** static
+- **Message:** Page has no <main> landmark.
+- **Who is affected:** Screen reader users cannot jump to the main content.
+
+```tsx
+import { Checkbox } from "../../components/ui/checkbox";
+```
+
+**Fix:** Wrap the page content in <main>.
+
+```diff
+--- a/apps/demo/before/app/register/page.tsx	
++++ b/apps/demo/before/app/register/page.tsx
+```
+
+Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#landmarks-skip-link
+
+### A11Y-0018 form-label
 
 - **WCAG:** 1.3.1 Info and Relationships (A); 3.3.2 Labels or Instructions (A); 4.1.2 Name, Role, Value (A)
 - **File:** apps/demo/before/app/register/page.tsx:11:7
@@ -360,14 +448,36 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/register/page.tsx	
 +++ b/apps/demo/before/app/register/page.tsx	
 @@ -1,1 +1,2 @@
--      <Input placeholder="Email" />
+-<Input placeholder="Email" />
 +<Label htmlFor="email">Email</Label>
-+      <Input id="email" placeholder="Email" />
++<Input id="email" placeholder="Email" />
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#form-label
 
-### A11Y-0015 form-label
+### A11Y-0019 input-autocomplete
+
+- **WCAG:** 1.3.5 Identify Input Purpose (AA)
+- **File:** apps/demo/before/app/register/page.tsx:11:7
+- **Status:** confirmed
+- **Source:** static
+- **Message:** This field looks like email and needs an autoComplete attribute.
+- **Who is affected:** People using a password manager or who have cognitive disabilities cannot autofill the field.
+
+```tsx
+<Input placeholder="Email" />
+```
+
+**Fix:** Add autoComplete with the matching token, such as email or name.
+
+```diff
+--- a/apps/demo/before/app/register/page.tsx	
++++ b/apps/demo/before/app/register/page.tsx
+```
+
+Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#input-autocomplete
+
+### A11Y-0020 form-label
 
 - **WCAG:** 1.3.1 Info and Relationships (A); 3.3.2 Labels or Instructions (A); 4.1.2 Name, Role, Value (A)
 - **File:** apps/demo/before/app/register/page.tsx:12:7
@@ -386,14 +496,14 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/register/page.tsx	
 +++ b/apps/demo/before/app/register/page.tsx	
 @@ -1,1 +1,2 @@
--      <Input placeholder="Password" type="password" />
+-<Input placeholder="Password" type="password" />
 +<Label htmlFor="password">Password</Label>
-+      <Input id="password" placeholder="Password" type="password" />
++<Input id="password" placeholder="Password" type="password" />
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#form-label
 
-### A11Y-0016 form-label
+### A11Y-0021 form-label
 
 - **WCAG:** 1.3.1 Info and Relationships (A); 3.3.2 Labels or Instructions (A); 4.1.2 Name, Role, Value (A)
 - **File:** apps/demo/before/app/register/page.tsx:13:7
@@ -412,14 +522,14 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/register/page.tsx	
 +++ b/apps/demo/before/app/register/page.tsx	
 @@ -1,1 +1,2 @@
--      <Textarea placeholder="About you" />
+-<Textarea placeholder="About you" />
 +<Label htmlFor="about-you">About you</Label>
-+      <Textarea id="about-you" placeholder="About you" />
++<Textarea id="about-you" placeholder="About you" />
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#form-label
 
-### A11Y-0017 form-label
+### A11Y-0022 form-label
 
 - **WCAG:** 1.3.1 Info and Relationships (A); 3.3.2 Labels or Instructions (A); 4.1.2 Name, Role, Value (A)
 - **File:** apps/demo/before/app/register/page.tsx:14:7
@@ -438,14 +548,14 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/register/page.tsx	
 +++ b/apps/demo/before/app/register/page.tsx	
 @@ -1,1 +1,2 @@
--      <Checkbox />
+-<Checkbox />
 +<Label htmlFor="label">Label</Label>
-+      <Checkbox id="label" />
++<Checkbox id="label" />
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#form-label
 
-### A11Y-0018 dialog-title
+### A11Y-0023 dialog-title
 
 - **WCAG:** 4.1.2 Name, Role, Value (A); 1.3.1 Info and Relationships (A)
 - **File:** apps/demo/before/components/delete-dialog.tsx:9:7
@@ -464,14 +574,14 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/components/delete-dialog.tsx	
 +++ b/apps/demo/before/components/delete-dialog.tsx	
 @@ -1,1 +1,3 @@
-       <DialogContent>
+ <DialogContent>
 +<DialogTitle>Describe this dialog</DialogTitle>
 +<DialogDescription>Explain the purpose of this dialog.</DialogDescription>
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#dialog-title
 
-### A11Y-0019 focus-visible-removed
+### A11Y-0024 focus-visible-removed
 
 - **WCAG:** 2.4.7 Focus Visible (AA)
 - **File:** apps/demo/before/components/header.tsx:8:7
@@ -490,13 +600,13 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/components/header.tsx	
 +++ b/apps/demo/before/components/header.tsx	
 @@ -1,1 +1,1 @@
--      <Link href="/" className="focus:outline-none">
-+      <Link href="/" className="focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus:outline-none">
+-<Link href="/" className="focus:outline-none">
++<Link href="/" className="focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus:outline-none">
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#focus-visible-removed
 
-### A11Y-0020 target-size
+### A11Y-0025 target-size
 
 - **WCAG:** 2.5.8 Target Size (Minimum) (AA)
 - **File:** apps/demo/before/components/header.tsx:11:7
@@ -515,15 +625,37 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/components/header.tsx	
 +++ b/apps/demo/before/components/header.tsx	
 @@ -1,1 +1,1 @@
--      <Button size="icon" className="size-5">
-+      <Button size="icon" className="size-6">
+-<Button size="icon" className="size-5">
++<Button size="icon" className="size-6">
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#target-size
 
 ## Moderate
 
-### A11Y-0021 page-title
+### A11Y-0026 heading-order
+
+- **WCAG:** 1.3.1 Info and Relationships (A)
+- **File:** apps/demo/before/app/page.tsx:1:1
+- **Status:** confirmed
+- **Source:** static
+- **Message:** Page has no h1.
+- **Who is affected:** Screen reader users navigating by heading cannot find the page topic.
+
+```tsx
+import Image from "next/image";
+```
+
+**Fix:** Add one h1 that names the page.
+
+```diff
+--- a/apps/demo/before/app/page.tsx	
++++ b/apps/demo/before/app/page.tsx
+```
+
+Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#heading-order
+
+### A11Y-0027 page-title
 
 - **WCAG:** 2.4.2 Page Titled (A)
 - **File:** apps/demo/before/app/page.tsx:6:1
@@ -548,7 +680,7 @@ export const metadata = { title: "Harbor" };
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#page-title
 
-### A11Y-0022 link-name
+### A11Y-0028 link-name
 
 - **WCAG:** 2.4.4 Link Purpose (In Context) (A)
 - **File:** apps/demo/before/app/page.tsx:18:7
@@ -567,13 +699,13 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/app/page.tsx	
 +++ b/apps/demo/before/app/page.tsx	
 @@ -1,1 +1,1 @@
--      <Link href="/blog/welcome">Read more</Link>
-+      <Link href="/blog/welcome">Describe the destination</Link>
+-<Link href="/blog/welcome">Read more</Link>
++<Link href="/blog/welcome">Describe the destination</Link>
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#link-name
 
-### A11Y-0023 page-title
+### A11Y-0029 page-title
 
 - **WCAG:** 2.4.2 Page Titled (A)
 - **File:** apps/demo/before/app/register/page.tsx:5:1
@@ -598,7 +730,7 @@ export const metadata = { title: "Harbor" };
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#page-title
 
-### A11Y-0024 dialog-title
+### A11Y-0030 dialog-title
 
 - **WCAG:** 4.1.2 Name, Role, Value (A); 1.3.1 Info and Relationships (A)
 - **File:** apps/demo/before/components/delete-dialog.tsx:9:7
@@ -617,11 +749,33 @@ Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/reference
 --- a/apps/demo/before/components/delete-dialog.tsx	
 +++ b/apps/demo/before/components/delete-dialog.tsx	
 @@ -1,1 +1,2 @@
-       <DialogContent>
+ <DialogContent>
 +<DialogDescription>Explain the purpose of this dialog.</DialogDescription>
 ```
 
 Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#dialog-title
+
+### A11Y-0031 focus-not-obscured
+
+- **WCAG:** 2.4.11 Focus Not Obscured (Minimum) (AA)
+- **File:** apps/demo/before/components/header.tsx:7:5
+- **Status:** needs_review
+- **Source:** static
+- **Message:** Sticky or fixed header or footer may cover focused content. Add scroll-padding on the document.
+- **Who is affected:** Keyboard users can land on a control hidden behind a sticky bar.
+
+```tsx
+<header className="sticky top-0 flex items-center justify-between bg-white px-4">
+```
+
+**Fix:** Add scroll-pt-* or scroll-padding-top on the scrolling element so focus clears the bar.
+
+```diff
+--- a/apps/demo/before/components/header.tsx	
++++ b/apps/demo/before/components/header.tsx
+```
+
+Docs: https://github.com/ZenenContreras/a11ycn/blob/main/skills/a11ycn/references/rules.md#focus-not-obscured
 
 ## Manual checks
 

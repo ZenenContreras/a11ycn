@@ -2,7 +2,7 @@ import type { FindingStatus, Severity, WcagCriterion } from "eslint-plugin-a11yc
 
 export type { FindingStatus, Severity, WcagCriterion };
 
-export type Format = "md" | "json";
+export type Format = "md" | "json" | "sarif" | "github";
 export type Framework = "next-app-router" | "next-pages" | "vite-react" | "unknown";
 
 export interface RawFinding {
@@ -17,6 +17,7 @@ export interface RawFinding {
   wcag: WcagCriterion[];
   whoIsAffected: string;
   fixDescription: string;
+  snippet?: string;
 }
 
 export interface Finding {
@@ -79,6 +80,9 @@ export interface AuditOptions {
   cwd?: string;
   now?: Date;
   version?: string;
+  lang?: string | null;
+  failOnExplicit?: boolean;
+  browserScan?: (url: string) => Promise<{ findings: RawFinding[]; warning?: string }>;
 }
 
 export interface AuditResult {
@@ -86,4 +90,5 @@ export interface AuditResult {
   exitCode: 0 | 2;
   warnings: string[];
   cacheHits: number;
+  locale: import("./i18n.js").Locale;
 }

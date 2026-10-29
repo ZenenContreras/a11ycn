@@ -1,6 +1,7 @@
 import pc from "picocolors";
-import type { Report, Severity } from "../types.js";
+import { t, type Locale } from "../i18n.js";
 import { SEVERITIES } from "../score.js";
+import type { Report, Severity } from "../types.js";
 
 const PAINT: Record<Severity, (value: string) => string> = {
   critical: pc.red,
@@ -9,7 +10,7 @@ const PAINT: Record<Severity, (value: string) => string> = {
   minor: pc.dim,
 };
 
-export function renderConsole(report: Report): string {
+export function renderConsole(report: Report, locale: Locale = "en"): string {
   const lines: string[] = [];
   lines.push(`${pc.bold("a11ycn")} ${pc.dim(report.version)}`);
   const stack = [
@@ -18,17 +19,17 @@ export function renderConsole(report: Report): string {
     report.target.shadcn ? "shadcn" : "no shadcn",
   ];
   lines.push(pc.dim(stack.join(" · ")));
-  lines.push(`${pc.bold("a11ycn score:")} ${colorScore(report.summary.score)}`);
-  lines.push(pc.dim(`${report.summary.filesScanned} files scanned`));
+  lines.push(`${pc.bold(t(locale, "cli.score"))} ${colorScore(report.summary.score)}`);
+  lines.push(pc.dim(t(locale, "cli.filesScanned", { count: String(report.summary.filesScanned) })));
   lines.push("");
 
   if (report.findings.length === 0) {
-    lines.push(pc.green("No static findings."));
+    lines.push(pc.green(t(locale, "cli.noFindings")));
   } else {
     for (const severity of SEVERITIES) {
       const group = report.findings.filter((finding) => finding.severity === severity);
       if (group.length === 0) continue;
-      lines.push(PAINT[severity](`${severity} (${group.length})`));
+      lines.push(PAINT[severity](`${t(locale, `severity.${severity}`)} (${group.length})`));
       for (const finding of group) {
         const location = pc.underline(`${finding.file}:${finding.line}:${finding.column}`);
         lines.push(`  ${location}  ${pc.bold(finding.ruleId)}  ${finding.message}`);
@@ -37,11 +38,7 @@ export function renderConsole(report: Report): string {
     }
   }
 
-  lines.push(
-    pc.dim(
-      "Automated checks do not find every accessibility issue. Test with a keyboard and a screen reader.",
-    ),
-  );
+  lines.push(pc.dim(t(locale, "report.disclaimer")));
   return lines.join("\n");
 }
 

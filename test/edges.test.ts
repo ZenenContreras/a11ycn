@@ -40,10 +40,10 @@ describe("edge cases", () => {
     const report = sampleReport();
     const text = renderConsole(report);
     expect(text).toContain("icon-button-name");
-    expect(text).toContain("critical");
-    expect(text).toContain("serious");
-    expect(text).toContain("moderate");
-    expect(text).toContain("minor");
+    expect(text).toContain("Critical");
+    expect(text).toContain("Serious");
+    expect(text).toContain("Moderate");
+    expect(text).toContain("Minor");
     expect(renderConsole({ ...report, summary: { ...report.summary, score: 95 }, findings: [] })).toContain(
       "No static findings",
     );
@@ -149,7 +149,7 @@ describe("edge cases", () => {
       cwd: path.resolve(import.meta.dirname, ".."),
       url: "http://localhost:3000",
     });
-    expect(result.warnings[0]).toMatch(/Browser checks are not available/);
+    expect(result.warnings[0]).toMatch(/Playwright/);
     expect(result.report.target.url).toBe("http://localhost:3000");
   });
 });

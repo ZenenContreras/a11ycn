@@ -2,10 +2,10 @@
 name: a11ycn
 description: Accessibility audit for React and Next.js apps built with Tailwind CSS and shadcn/ui. Finds WCAG 2.2 A and AA issues (missing labels, icon-only buttons, focus styles removed, low Tailwind color contrast, dialogs without titles, small touch targets, missing lang and page titles) and proposes code fixes. Use when the user asks for an accessibility or a11y audit, a WCAG review, screen reader or keyboard support, or asks to make a component or page accessible.
 license: MIT
-compatibility: Requires Node.js 20+. Static checks need no browser and no API key. Browser checks are not included in v0.1.0.
+compatibility: Requires Node.js 20+. Static checks need no browser and no API key. Browser checks need optional Playwright with Chromium.
 metadata:
   author: zenen
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # a11ycn
@@ -35,7 +35,7 @@ pnpm a11ycn audit <path> --format json --out .a11ycn/report.json
 
 The npm package is not published yet. v0.1.0 scans `.ts`, `.tsx`, and `.jsx`. Default paths are `./src` and `./app` when they exist.
 
-3. Browser checks (`--url`) are not in v0.1.0. If the user gives a URL, run the command anyway. If the CLI says browser checks are not available, say so and continue with the static scan plus the manual checks. Do not invent browser findings.
+3. If the user gives a URL, also run `npx a11ycn audit --url <url> --format json`. That opens the page with Playwright and axe-core. If the CLI says Playwright is not installed, repeat the install command it prints and continue with the static scan. Do not invent browser findings. Static and browser hits for the same element are merged.
 4. Do the manual checks in [references/manual-checks.md](references/manual-checks.md): focus order, focus trap, Escape to close, live announcements, and whether alt text is actually meaningful.
 5. Validate every finding before you report it. Open the file. A icon button that already has `<span className="sr-only">` is not a finding. Mark each one `confirmed` or `needs_review`. Never invent a finding.
 6. Write `.a11ycn/REPORT.md` and `report.json`, grouped by severity. Follow [references/report-format.md](references/report-format.md). Validate JSON with `node skills/a11ycn/scripts/validate-report.mjs .a11ycn/report.json`.
@@ -54,11 +54,11 @@ Ignore a false positive with `// a11ycn-disable-next-line <rule-id>` on the prev
 
 Rule id, WCAG criterion and level, severity, `file:line`, the code snippet, who is affected, and a fix diff. Use the same shape as `assets/report-schema.json`.
 
-## Automated in v0.1.0
+## Automated checks
 
-`img-alt`, `icon-button-name`, `clickable-non-interactive`, `focus-visible-removed`, `form-label`, `html-lang`, `page-title`, `link-name`, `dialog-title`, `target-size`.
+Every rule in [references/rules.md](references/rules.md) has a static check, including text and non-text contrast. `reduced-motion`, `media-captions`, and `status-messages` are minor and do not fail `--fail-on serious`.
 
-Other rules in [references/rules.md](references/rules.md) are for guidance until a later version checks them. Do not claim the CLI found them.
+Pass `--lang es` when the user wants the report in Spanish. Locales live in `i18n/`.
 
 ## Do not
 
